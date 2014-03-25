@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.1.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_1_0.dtd">
+<service-builder package-path="com.rivetlogic.event">
+    <author>juancarrillo</author>
+    <namespace>rivetlogic_event</namespace>
+
+    <entity name="Event" uuid="true" local-service="true" remote-service="false">
+
+        <!-- PK fields -->
+
+        <column name="eventId" type="long" primary="true" />
+	
+        <!-- Group instance -->
+
+        <column name="groupId" type="long" />
+
+        <!-- Audit fields -->
+
+        <column name="companyId" type="long" />
+        <column name="userId" type="long" />
+
+        <!-- Principal Fields -->
+
+        <column name="name" type="String" />
+        <column name="location" type="String" />
+        <column name="description" type="String" />
+        <column name="eventDate" type="Date" />
+        <column name="privateEvent" type="boolean" />
+        <!--<column name="participants" type="Collection" entity="Participant" mapping-key="eventId"/>-->
+
+        <!-- Order -->
+
+        <order>
+            <order-column name="eventDate" order-by="asc" />
+            <order-column name="name" case-sensitive="false" order-by="asc" />
+        </order>
+
+        <!-- Finder methods -->
+
+        <finder name="CompanyId" return-type="Collection">
+            <finder-column name="companyId" />
+        </finder>
+
+        <finder name="GroupId" return-type="Collection">
+            <finder-column name="groupId" />
+        </finder>
+
+    </entity>
+
+    <entity name="Participant" uuid="true" local-service="true" remote-service="false">
+
+        <!-- PK fields -->
+
+        <column name="participantId" type="long" primary="true" />
+
+        <!-- Foreing keys -->
+
+        <column name="companyId" type="long" />
+        <column name="groupId" type="long" />
+        <column name="eventId" type="long"/>
+
+        <!-- Principal Fields -->
+
+        <column name="fullName" type="String" />
+        <column name="email" type="String" />
+        <column name="phoneNumber" type="String" />
+        <column name="companyName" type="String" />
+        <column name="status" type="int"/>
+
+        <!-- Order -->
+
+        <order>
+            <order-column name="fullName" case-sensitive="false" order-by="asc" />
+        </order>
+
+        <!-- Finder methods -->
+
+        <finder name="EventId" return-type="Collection">
+            <finder-column name="eventId" />
+        </finder>
+        
+        <finder name="EventIdAndEmail" return-type="Collection">
+            <finder-column name="eventId" />
+            <finder-column name="email" />
+        </finder>
+
+    </entity>
+    
+    <entity name="Token" uuid="true" local-service="true" remote-service="false">
+    	<!-- PK fields -->
+        <column name="tokenId" type="long" primary="true" />
+    	
+    	<column name="participantId" type="long"/>
+    	<column name="expiredDate" type="Date"/>
+    	
+    	<finder name="ParticipantId" return-type="Collection">
+    		<finder-column name="participantId"/>
+    	</finder>
+    </entity>
+    
+    <exceptions>
+        <exception>ImportParticipants</exception>
+    </exceptions>
+
+</service-builder>

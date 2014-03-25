@@ -1,0 +1,43 @@
+<%--
+/** 
+* Copyright (C) 2005-2014 Rivet Logic Corporation. 
+* 
+* This program is free software; you can redistribute it and/or 
+* modify it under the terms of the GNU General Public License 
+* as published by the Free Software Foundation; version 3 
+* of the License. 
+* 
+* This program is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of 
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+* GNU General Public License for more details. 
+* 
+* You should have received a copy of the GNU General Public License 
+* along with this program; if not, write to the Free Software 
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, 
+* Boston, MA 02110-1301, USA. 
+*/
+--%>
+
+<%
+Format dateFormatTime = FastDateFormatFactoryUtil.getTime(locale);
+%>
+
+<dl class="definition">
+
+	<dt><liferay-ui:message key="event-name"/></dt>
+	<dd><%= event.getName() %></dd>
+
+	<dt><liferay-ui:message key="event-date"/></dt>
+	<dd><%= (Validator.isNotNull(event.getEventDate())) ? NotificationConstants.SDF.format(event.getEventDate()) : "" %></dd>
+
+	<dt><liferay-ui:message key="event-start-time"/></dt>
+	<dd><%= (Validator.isNotNull(event.getEventDate())) ? dateFormatTime.format(event.getEventDate()) : "" %></dd>
+
+	<dt><liferay-ui:message key="event-location"/></dt>
+	<dd><%= event.getLocation() %></dd>
+
+	<dt><liferay-ui:message key="event-description"/></dt>
+	<dd><%= event.getDescription() %></dd>		
+	
+</dl>

@@ -1,0 +1,72 @@
+.event-portlet .lfr-input-time {
+    clear: both;
+}
+
+.event-portlet .participants-list td { 
+	padding-right: 20px;
+}
+
+.event-portlet .participants-list {
+    margin-top: 1.5em;
+}
+
+.event-portlet .participants-list th {
+    font-size: 1.2em;
+    padding-bottom: 0.5em;
+}
+
+.event-portlet.event-portlet textarea {
+    width: 20em;
+}
+
+.event-portlet legend {
+    padding: 0;
+    font-size: 1.3em;
+}
+
+.definition dd {
+    float: left;
+}
+
+.definition dt {
+    float: left;
+    clear: left;
+    width: 6em;
+    font-weight: bold;
+    margin: 0 0 15px;
+}
+.event-portlet .event-time-edit {
+	clear: left;
+	padding-top: 1em;
+}
+.definition {
+    overflow: hidden;
+    margin: 1em 0;
+    font-size: 1.2em;
+}
+
+.email-subject input {
+	width: 500px;
+}
+
+.message-template textarea {
+	width: 400px;
+	height: 100px;
+}
+
+.div-table-row{
+  display:table-row;
+  width:auto;
+  clear:both;
+}
+
+.div-table-col{
+  float:left;/*fix for  buggy browsers*/
+  display:table-column;         
+  width:220px;     
+  margin:0 0 0 5px;    
+}
+
+span.event-message{
+	font-size:17px;
+}

@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd">
+	<persistence-unit-metadata>
+		<xml-mapping-metadata-complete/>
+		<persistence-unit-defaults>
+			<access>PROPERTY</access>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+	<mapped-superclass class="com.rivetlogic.event.model.impl.EventModelImpl">
+		<attributes>
+			<id name="eventId" />
+			<basic name="uuid">
+				<column name="UUID_" />
+			</basic>
+			<basic name="groupId" />
+			<basic name="companyId" />
+			<basic name="userId" />
+			<basic name="name" />
+			<basic name="location" />
+			<basic name="description" />
+			<basic name="eventDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="privateEvent" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.rivetlogic.event.model.impl.ParticipantModelImpl">
+		<attributes>
+			<id name="participantId" />
+			<basic name="uuid">
+				<column name="UUID_" />
+			</basic>
+			<basic name="companyId" />
+			<basic name="groupId" />
+			<basic name="eventId" />
+			<basic name="fullName" />
+			<basic name="email" />
+			<basic name="phoneNumber" />
+			<basic name="companyName" />
+			<basic name="status" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.rivetlogic.event.model.impl.TokenModelImpl">
+		<attributes>
+			<id name="tokenId" />
+			<basic name="uuid">
+				<column name="UUID_" />
+			</basic>
+			<basic name="participantId" />
+			<basic name="expiredDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<entity class="com.rivetlogic.event.model.impl.EventImpl" name="Event">
+		<table name="rivetlogic_event_Event" />
+		<attributes />
+	</entity>
+	<entity class="com.rivetlogic.event.model.impl.ParticipantImpl" name="Participant">
+		<table name="rivetlogic_event_Participant" />
+		<attributes />
+	</entity>
+	<entity class="com.rivetlogic.event.model.impl.TokenImpl" name="Token">
+		<table name="rivetlogic_event_Token" />
+		<attributes />
+	</entity>
+</entity-mappings>

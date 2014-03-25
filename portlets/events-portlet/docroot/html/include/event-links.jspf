@@ -1,0 +1,33 @@
+<%--
+/** 
+* Copyright (C) 2005-2014 Rivet Logic Corporation. 
+* 
+* This program is free software; you can redistribute it and/or 
+* modify it under the terms of the GNU General Public License 
+* as published by the Free Software Foundation; version 3 
+* of the License. 
+* 
+* This program is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of 
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+* GNU General Public License for more details. 
+* 
+* You should have received a copy of the GNU General Public License 
+* along with this program; if not, write to the Free Software 
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, 
+* Boston, MA 02110-1301, USA. 
+*/
+--%>
+
+<aui:fieldset>
+	<aui:input name="<%=EventsPrefsBean.PREFERENCE_NUM_ROWS%>" value="${prefBean.numRows}" label="event-display-num-rows" type="text">
+		<aui:validator name="required"/>
+	</aui:input>
+	<aui:input name="<%=EventsPrefsBean.PREFERENCE_PUBLIC_EVENT_URL %>" value="${prefBean.publicEventsURL}" label="event-public-events-url" type="text">
+    <aui:validator name="required"/>
+    </aui:input>
+	<aui:field-wrapper label="invalid-confirmation-link">
+		<liferay-ui:input-editor toolbarSet="email"/>
+	</aui:field-wrapper>
+	<aui:input name="<%=EventsPrefsBean.PREFERENCE_INVALID_CONFIRMATION_MESSAGE %>" type="hidden" value="${prefBean.invalidConfirmationLinkMessage}"/>
+</aui:fieldset>

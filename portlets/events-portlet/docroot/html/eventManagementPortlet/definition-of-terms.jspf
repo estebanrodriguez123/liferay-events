@@ -1,0 +1,92 @@
+<%--
+/** 
+* Copyright (C) 2005-2014 Rivet Logic Corporation. 
+* 
+* This program is free software; you can redistribute it and/or 
+* modify it under the terms of the GNU General Public License 
+* as published by the Free Software Foundation; version 3 
+* of the License. 
+* 
+* This program is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of 
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+* GNU General Public License for more details. 
+* 
+* You should have received a copy of the GNU General Public License 
+* along with this program; if not, write to the Free Software 
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, 
+* Boston, MA 02110-1301, USA. 
+*/
+--%>
+
+<div class="definition-of-terms">
+	<h4><liferay-ui:message key="definition-of-terms" /></h4>
+	<dl>
+		<dt>
+			<%= EmailTemplateVariables.FROM_NAME.getToken() %> 	
+		</dt>
+		<dd>
+			<liferay-ui:message key="<%= EmailTemplateVariables.FROM_NAME.getHelp() %>"/>	
+		</dd>
+		<dt>
+			<%= EmailTemplateVariables.FROM_ADDRESS.getToken() %> 	
+		</dt>
+		<dd>
+			<liferay-ui:message key="<%= EmailTemplateVariables.FROM_ADDRESS.getHelp() %>"/>	
+		</dd>
+		<dt>
+			<%= EmailTemplateVariables.TO_NAME.getToken() %> 	
+		</dt>
+		<dd>
+			<liferay-ui:message key="<%= EmailTemplateVariables.TO_NAME.getHelp() %>"/>	
+		</dd>
+		<dt>
+			<%= EmailTemplateVariables.TO_ADDRESS.getToken() %> 	
+		</dt>
+		<dd>
+			<liferay-ui:message key="<%= EmailTemplateVariables.TO_ADDRESS.getHelp() %>"/>	
+		</dd>
+		<dt>
+			<%= EmailTemplateVariables.EVENT_NAME.getToken() %> 	
+		</dt>
+		<dd>
+			<liferay-ui:message key="<%= EmailTemplateVariables.EVENT_NAME.getHelp() %>"/>	
+		</dd>
+		<dt>
+			<%= EmailTemplateVariables.EVENT_DATE.getToken() %> 	
+		</dt>
+		<dd>
+			<liferay-ui:message key="<%= EmailTemplateVariables.EVENT_DATE.getHelp() %>"/>	
+		</dd>
+		<dt>
+			<%= EmailTemplateVariables.EVENT_LOCATION.getToken() %> 	
+		</dt>
+		<dd>
+			<liferay-ui:message key="<%= EmailTemplateVariables.EVENT_LOCATION.getHelp() %>"/>	
+		</dd>
+		<dt>
+			<%= EmailTemplateVariables.EVENT_DESCRIPTION.getToken() %> 	
+		</dt>
+		<dd>
+			<liferay-ui:message key="<%= EmailTemplateVariables.EVENT_DESCRIPTION.getHelp() %>"/>	
+		</dd>
+		<dt>
+			<%= EmailTemplateVariables.PUBLIC_EVENTS_URL.getToken() %> 	
+		</dt>
+		<dd>
+			<liferay-ui:message key="<%= EmailTemplateVariables.PUBLIC_EVENTS_URL.getHelp() %>"/>	
+		</dd>
+		<dt>
+			<%= EmailTemplateVariables.CONFIRMATION_URL.getToken() %> 	
+		</dt>
+		<dd>
+			<liferay-ui:message key="<%= EmailTemplateVariables.CONFIRMATION_URL.getHelp() %>"/>	
+		</dd>
+		<dt>
+			<%= EmailTemplateVariables.REJECTION_URL.getToken() %> 	
+		</dt>
+		<dd>
+			<liferay-ui:message key="<%= EmailTemplateVariables.REJECTION_URL.getHelp() %>"/>	
+		</dd>
+	</dl>
+</div>

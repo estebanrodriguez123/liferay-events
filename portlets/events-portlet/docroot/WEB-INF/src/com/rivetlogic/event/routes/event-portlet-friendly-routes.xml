@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 6.1.0//EN" "http://www.liferay.com/dtd/liferay-friendly-url-routes_6_1_0.dtd">
+<routes>
+    
+	<route>
+    	<pattern>/</pattern>
+		<implicit-parameter name="mvcPath">/html/eventportlet/view.jsp</implicit-parameter>
+    </route>
+    
+    <route>
+		<pattern>/view_event/{resourcePrimKey:\d+}</pattern>
+		<implicit-parameter name="mvcPath">/html/eventportlet/view_event.jsp</implicit-parameter>
+	</route>
+	
+	<route>
+		<pattern>/{eventId:\d+}/{token}/{status}</pattern>
+		<implicit-parameter name="p_p_lifecycle">0</implicit-parameter>
+		<implicit-parameter name="p_p_state">normal</implicit-parameter>
+		<implicit-parameter name="confirmationHandling">true</implicit-parameter>
+	</route>
+	
+	<route>
+    	<pattern>/{p_p_mode}</pattern>
+    	<implicit-parameter name="p_p_state">normal</implicit-parameter>
+    </route>
+	
+</routes>
