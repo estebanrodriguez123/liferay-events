@@ -40,16 +40,16 @@
 <aui:form name="fm_edit_preferences" action="${changePreferencesUrl}" method="POST" onSubmit="event.preventDefault(); ${pns}saveConfiguration();">
 	<aui:input name="<%=WebKeys.SELECTED_TAB%>" value="<%= selectedTab %>" type="hidden"/>
 	<liferay-ui:tabs
-		names='<%=PreferencesConstants.EMAIL_FROM + "," + PreferencesConstants.REGULAR_INVITATION + "," +
-			PreferencesConstants.GOOD_BYE_MESSAGE + "," + PreferencesConstants.EVENT_LINKS%>'
+		names='<%=PreferencesConstants.DISPLAY_EMAIL_FROM + "," + PreferencesConstants.DISPLAY_REGULAR_INVITATION + "," +
+			PreferencesConstants.GOOD_BYE_MESSAGE + "," + PreferencesConstants.DISPLAY_OTHERS%>'
 		param="<%=WebKeys.SELECTED_TAB%>"
 		url="<%=portletURL%>"
 	/>
 	<c:choose>
-		<c:when test='<%= selectedTab.equals(PreferencesConstants.EMAIL_FROM) %>'>
+		<c:when test='<%= selectedTab.equals(PreferencesConstants.DISPLAY_EMAIL_FROM) %>'>
 			<%@include file="/html/include/email-from.jspf" %>
 		</c:when>
-		<c:when test='<%= selectedTab.equals(PreferencesConstants.REGULAR_INVITATION) %>'>
+		<c:when test='<%= selectedTab.equals(PreferencesConstants.DISPLAY_REGULAR_INVITATION) %>'>
 			<%@include file="/html/include/regular-invitation.jspf" %>
 		</c:when>
 		<c:when test='<%= selectedTab.equals(PreferencesConstants.GOOD_BYE_MESSAGE) %>'>
@@ -70,8 +70,8 @@
 			</aui:fieldset>
 			<%@include file="/html/eventManagementPortlet/definition-of-terms.jspf" %>
 		</c:when>
-		<c:when test='<%= selectedTab.equals(PreferencesConstants.EVENT_LINKS) %>'>
-			<%@include file="/html/include/event-links.jspf" %>
+		<c:when test='<%= selectedTab.equals(PreferencesConstants.DISPLAY_OTHERS) %>'>
+			<%@include file="/html/eventportlet/include/event-links.jspf" %>
 		</c:when>
 	</c:choose>
 	<aui:button-row>
@@ -80,10 +80,10 @@
 </aui:form>
 <aui:script>
 	function ${pns}initEditor() {
-		if(<%=selectedTab.equals(PreferencesConstants.REGULAR_INVITATION)%>){
+		if(<%=selectedTab.equals(PreferencesConstants.DISPLAY_REGULAR_INVITATION)%>){
 			return document.${pns}fm_edit_preferences.${pns}regularInvitationBody.value;
 		}
-		if(<%=selectedTab.equals(PreferencesConstants.EVENT_LINKS)%>){
+		if(<%=selectedTab.equals(PreferencesConstants.DISPLAY_OTHERS)%>){
 			return document.${pns}fm_edit_preferences.${pns}invalidConfirmationLinkMessage.value;
 		}
 		if(<%=selectedTab.equals(PreferencesConstants.EXPIRED_EVENT)%>){
@@ -97,10 +97,10 @@
 	
 	Liferay.provide(window,'${pns}saveConfiguration',
 		function() {
-			if(<%=selectedTab.equals(PreferencesConstants.REGULAR_INVITATION)%>){
+			if(<%=selectedTab.equals(PreferencesConstants.DISPLAY_REGULAR_INVITATION)%>){
 				document.${pns}fm_edit_preferences.${pns}regularInvitationBody.value = window.${pns}editor.getHTML();
 			}
-			if(<%=selectedTab.equals(PreferencesConstants.EVENT_LINKS)%>){
+			if(<%=selectedTab.equals(PreferencesConstants.DISPLAY_OTHERS)%>){
 				document.${pns}fm_edit_preferences.${pns}invalidConfirmationLinkMessage.value = window.${pns}editor.getHTML();
 			}	
 			if(<%=selectedTab.equals(PreferencesConstants.EXPIRED_EVENT)%>){

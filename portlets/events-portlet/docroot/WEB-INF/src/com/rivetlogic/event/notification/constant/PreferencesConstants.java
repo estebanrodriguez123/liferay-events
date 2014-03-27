@@ -22,8 +22,10 @@ package com.rivetlogic.event.notification.constant;
 public class PreferencesConstants {
     
     public static final String EMAIL_FROM = "event-email-from";
+    public static final String DISPLAY_EMAIL_FROM = "display-event-email-from";
     
     public static final String REGULAR_INVITATION = "invitation-regular";
+    public static final String DISPLAY_REGULAR_INVITATION = "display-invitation-regular";
     
     public static final String UPDATED_INVITATION = "invitation-updated";
     
@@ -34,6 +36,8 @@ public class PreferencesConstants {
     public static final String EXPIRED_EVENT = "expired-event";
     
     public static final String EVENT_LINKS = "event-links";
+    public static final String DISPLAY_OTHERS = "display-others";
+    
     
     public static final String GOOD_BYE_MESSAGE = "good-bye-message";
     
@@ -41,7 +45,7 @@ public class PreferencesConstants {
     
     public static String getOptions() {
         return EMAIL_FROM + "," + REGULAR_INVITATION + "," + UPDATED_INVITATION + "," + CANCELLED_INVITATION + ","
-                + SUCCESSFUL_REGISTRATION + "," + REMINDER_MESSAGE + "," + EVENT_LINKS;
+               + REMINDER_MESSAGE + "," + EVENT_LINKS;
     }
     
     public static final String ERROR_LOAD_PREFERENCES = "preferences-load-error";

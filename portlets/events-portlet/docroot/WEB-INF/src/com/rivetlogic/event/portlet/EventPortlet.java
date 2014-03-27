@@ -27,6 +27,8 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.model.Layout;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.rivetlogic.event.NoSuchEventException;
@@ -86,7 +88,7 @@ public class EventPortlet extends MVCPortlet {
     @Override
     public void doEdit(RenderRequest request, RenderResponse response) throws IOException, PortletException {
         
-        String selectedTab = ParamUtil.getString(request, WebKeys.SELECTED_TAB, PreferencesConstants.EMAIL_FROM);
+        String selectedTab = ParamUtil.getString(request, WebKeys.SELECTED_TAB, PreferencesConstants.DISPLAY_EMAIL_FROM);
         
         request.setAttribute(WebKeys.PREF_BEAN, new EventsPrefsBean(request));
         request.setAttribute(WebKeys.SELECTED_TAB, selectedTab);
@@ -99,6 +101,7 @@ public class EventPortlet extends MVCPortlet {
         
         String jspPage = getInitParameter(VIEW_TEMPLATE);
         EventsPrefsBean prefBean = new EventsPrefsBean(request);
+        
         Long eventId = ParamUtil.getLong(request, NotificationConstants.EVENT_ID, EventPortletConstants.INVALID_ID);
         
         if (eventId != EventPortletConstants.INVALID_ID) {
@@ -225,6 +228,13 @@ public class EventPortlet extends MVCPortlet {
     private void sendNotification(PortletRequest request, Participant participant) {
         
         EventsPrefsBean prefBean = new EventsPrefsBean(request);
+     
+        // Events URL
+        ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+        Layout layout = themeDisplay.getLayout();
+        String publicURL = themeDisplay.getPathFriendlyURLPublic() + themeDisplay.getScopeGroup().getFriendlyURL() + layout.getFriendlyURL();
+        prefBean.setPublicEventsURL(publicURL);
+        
         Message message = new Message();
         message.put(NotificationConstants.CMD, NotificationConstants.MANUAL_EVENT_REGISTRATION);
         

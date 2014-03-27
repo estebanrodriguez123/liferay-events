@@ -77,6 +77,7 @@
 			</aui:fieldset>
 			<%@include file="/html/eventManagementPortlet/definition-of-terms.jspf" %>
 		</c:when>
+		<%-- Hiding this option because we are not sending an sucessful registration message by now
 		<c:when test='<%=selectedTab.equals(PreferencesConstants.SUCCESSFUL_REGISTRATION)%>'>
 			<aui:fieldset>
 				<aui:input name="<%=ManagementPrefsBean.PREFERENCE_SUCCESS_MESSAGE_SUBJECT %>" label="event-subject" value="${prefBean.successRegistrationSubject}" type="text" cssClass="email-subject">
@@ -89,6 +90,7 @@
 			</aui:fieldset>
 			<%@include file="/html/eventManagementPortlet/definition-of-terms.jspf" %>
 		</c:when>
+		 --%>
 		<c:when test="<%=selectedTab.equals(PreferencesConstants.REMINDER_MESSAGE)%>">
 			<aui:fieldset>
 				<aui:input name="<%=ManagementPrefsBean.PREFERENCE_REMINDER_EVENT_SUBJECT %>" label="event-subject" value="${prefBean.reminderEventSubject}" type="text" cssClass="email-subject">
@@ -103,7 +105,7 @@
 		</c:when>
 		
 		<c:when test='<%=selectedTab.equals(PreferencesConstants.EVENT_LINKS)%>'>
-			<%@include file="/html/include/event-links.jspf" %>
+			<%@include file="/html/eventManagementPortlet/include/event-links.jspf" %>
 		</c:when>
 	</c:choose>
 	
@@ -128,9 +130,7 @@
 		if(<%=selectedTab.equals(PreferencesConstants.REMINDER_MESSAGE)%>){
 			return document.${pns}fm_edit_preferences.${pns}reminderEventBody.value;
 		}
-		if(<%=selectedTab.equals(PreferencesConstants.EVENT_LINKS)%>){
-			return document.${pns}fm_edit_preferences.${pns}invalidConfirmationLinkMessage.value;
-		}
+
 	};
 	
 	Liferay.provide(window,'${pns}saveConfiguration',
@@ -150,9 +150,6 @@
 			if(<%=selectedTab.equals(PreferencesConstants.REMINDER_MESSAGE) %>){
 				document.${pns}fm_edit_preferences.${pns}reminderEventBody.value = window.${pns}editor.getHTML();
 			}
-			if(<%=selectedTab.equals(PreferencesConstants.EVENT_LINKS)%>){
-				document.${pns}fm_edit_preferences.${pns}invalidConfirmationLinkMessage.value = window.${pns}editor.getHTML();
-			}	
 			submitForm(document.${pns}fm_edit_preferences);
 		},
 		['liferay-util-list-fields']

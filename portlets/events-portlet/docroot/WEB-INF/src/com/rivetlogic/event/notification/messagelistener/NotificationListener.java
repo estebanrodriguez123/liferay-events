@@ -193,8 +193,10 @@ public class NotificationListener implements MessageListener {
         Event event = EventLocalServiceUtil.getEvent(participant.getEventId());
         Token token = TokenLocalServiceUtil.createToken(participant);
         String confirmationURL = PropsValues.CONFIRMATION_LINK;
+        boolean  addSlash = ! message.getString(NotificationConstants.PUBLIC_URL).startsWith(StringPool.FORWARD_SLASH);
         
-        String portalURL = message.getString(NotificationConstants.PORTAL_URL) + StringPool.FORWARD_SLASH;
+        String portalURL = message.getString(NotificationConstants.PORTAL_URL) + 
+                (addSlash? StringPool.FORWARD_SLASH: StringPool.BLANK);
         confirmationURL = StringUtil.replace(confirmationURL,
                 new String[] { PATTERN_REPLACE_ZERO, PATTERN_REPLACE_ONE },
                 new String[] { Long.toString(event.getEventId()), token.getUuid() });

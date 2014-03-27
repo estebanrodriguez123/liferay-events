@@ -26,8 +26,4 @@
 	<aui:input name="<%=EventsPrefsBean.PREFERENCE_PUBLIC_EVENT_URL %>" value="${prefBean.publicEventsURL}" label="event-public-events-url" type="text">
     <aui:validator name="required"/>
     </aui:input>
-	<aui:field-wrapper label="invalid-confirmation-link">
-		<liferay-ui:input-editor toolbarSet="email"/>
-	</aui:field-wrapper>
-	<aui:input name="<%=EventsPrefsBean.PREFERENCE_INVALID_CONFIRMATION_MESSAGE %>" type="hidden" value="${prefBean.invalidConfirmationLinkMessage}"/>
 </aui:fieldset>
