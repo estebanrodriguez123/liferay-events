@@ -96,18 +96,20 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return deleteEvent(getEvent(eventId));
     }
     
-    private DynamicQuery getEventsDynamicQuery(Criterion criterion) {
+    private DynamicQuery getEventsDynamicQuery(Criterion criterion, boolean useOrder) {
         DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(Event.class);
         dynamicQuery.add(criterion);
-        Order order = OrderFactoryUtil.asc(EVENT_DATE_COLUMN);
-        dynamicQuery.addOrder(order);
+        if(useOrder) {
+        	Order order = OrderFactoryUtil.asc(EVENT_DATE_COLUMN);
+        	dynamicQuery.addOrder(order);
+        }
         return dynamicQuery;
     }
     
-    private DynamicQuery getPastEventsDynamicQuery() {
+    private DynamicQuery getPastEventsDynamicQuery(boolean useOrder) {
         Date currentDate = new Date();
         Criterion criterion = RestrictionsFactoryUtil.le(EVENT_DATE_COLUMN, currentDate);
-        return getEventsDynamicQuery(criterion);
+        return getEventsDynamicQuery(criterion, useOrder);
     }
     
     @SuppressWarnings("unchecked")
@@ -115,7 +117,7 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         
         List<Event> pastEvents = new ArrayList<Event>();
         
-        DynamicQuery dynamicQuery = getPastEventsDynamicQuery();
+        DynamicQuery dynamicQuery = getPastEventsDynamicQuery(true);
         
         try {
             pastEvents = (List<Event>) eventPersistence.findWithDynamicQuery(dynamicQuery, start, end);
@@ -128,7 +130,7 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
     
     public int getPastEventsCount() {
         int result = 0;
-        DynamicQuery dynamicQuery = getPastEventsDynamicQuery();
+        DynamicQuery dynamicQuery = getPastEventsDynamicQuery(false);
         try {
             result = (int) eventPersistence.countWithDynamicQuery(dynamicQuery);
         } catch (SystemException e) {
@@ -137,10 +139,10 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return result;
     }
     
-    private DynamicQuery getUpcomingEventsDynamicQuery() {
+    private DynamicQuery getUpcomingEventsDynamicQuery(boolean useOrder) {
         Date currentDate = new Date();
         Criterion criterion = RestrictionsFactoryUtil.ge(EVENT_DATE_COLUMN, currentDate);
-        return getEventsDynamicQuery(criterion);
+        return getEventsDynamicQuery(criterion, useOrder);
     }
     
     @SuppressWarnings("unchecked")
@@ -148,7 +150,7 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         
         List<Event> upcomingEvents = new ArrayList<Event>();
         
-        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery();
+        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(true);
         
         try {
             upcomingEvents = (List<Event>) eventPersistence.findWithDynamicQuery(dynamicQuery, start, end);
@@ -161,7 +163,7 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
     
     public int getUpcomingEventsCount() {
         int result = 0;
-        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery();
+        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(false);
         try {
             result = (int) eventPersistence.countWithDynamicQuery(dynamicQuery);
         } catch (SystemException e) {
@@ -170,8 +172,8 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return result;
     }
     
-    private DynamicQuery getPublicUpcomingEventsDynamicQuery() {
-        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery();
+    private DynamicQuery getPublicUpcomingEventsDynamicQuery(boolean useOrder) {
+        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(useOrder);
         Criterion criterion = RestrictionsFactoryUtil.eq(EVENT_PRIVATE_COLUMN, false);
         dynamicQuery.add(criterion);
         return dynamicQuery;
@@ -182,7 +184,7 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         
         List<Event> publicEvents = new ArrayList<Event>();
         
-        DynamicQuery dynamicQuery = getPublicUpcomingEventsDynamicQuery();
+        DynamicQuery dynamicQuery = getPublicUpcomingEventsDynamicQuery(true);
         
         try {
             publicEvents = (List<Event>) eventPersistence.findWithDynamicQuery(dynamicQuery, start, end);
@@ -196,7 +198,7 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
     public int getPublicEventsCount() {
         
         int result = 0;
-        DynamicQuery dynamicQuery = getPublicUpcomingEventsDynamicQuery();
+        DynamicQuery dynamicQuery = getPublicUpcomingEventsDynamicQuery(false);
         try {
             result = (int) eventPersistence.countWithDynamicQuery(dynamicQuery);
         } catch (SystemException e) {
