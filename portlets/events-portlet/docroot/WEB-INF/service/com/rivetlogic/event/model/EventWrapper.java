@@ -51,6 +51,7 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 
 		attributes.put("uuid", getUuid());
 		attributes.put("eventId", getEventId());
+		attributes.put("calendarBookingId", getCalendarBookingId());
 		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
@@ -58,6 +59,7 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 		attributes.put("location", getLocation());
 		attributes.put("description", getDescription());
 		attributes.put("eventDate", getEventDate());
+		attributes.put("eventEndDate", getEventEndDate());
 		attributes.put("privateEvent", getPrivateEvent());
 
 		return attributes;
@@ -75,6 +77,12 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 
 		if (eventId != null) {
 			setEventId(eventId);
+		}
+
+		Long calendarBookingId = (Long)attributes.get("calendarBookingId");
+
+		if (calendarBookingId != null) {
+			setCalendarBookingId(calendarBookingId);
 		}
 
 		Long groupId = (Long)attributes.get("groupId");
@@ -117,6 +125,12 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 
 		if (eventDate != null) {
 			setEventDate(eventDate);
+		}
+
+		Date eventEndDate = (Date)attributes.get("eventEndDate");
+
+		if (eventEndDate != null) {
+			setEventEndDate(eventEndDate);
 		}
 
 		Boolean privateEvent = (Boolean)attributes.get("privateEvent");
@@ -184,6 +198,26 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	@Override
 	public void setEventId(long eventId) {
 		_event.setEventId(eventId);
+	}
+
+	/**
+	* Returns the calendar booking ID of this event.
+	*
+	* @return the calendar booking ID of this event
+	*/
+	@Override
+	public long getCalendarBookingId() {
+		return _event.getCalendarBookingId();
+	}
+
+	/**
+	* Sets the calendar booking ID of this event.
+	*
+	* @param calendarBookingId the calendar booking ID of this event
+	*/
+	@Override
+	public void setCalendarBookingId(long calendarBookingId) {
+		_event.setCalendarBookingId(calendarBookingId);
 	}
 
 	/**
@@ -346,6 +380,26 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	@Override
 	public void setEventDate(java.util.Date eventDate) {
 		_event.setEventDate(eventDate);
+	}
+
+	/**
+	* Returns the event end date of this event.
+	*
+	* @return the event end date of this event
+	*/
+	@Override
+	public java.util.Date getEventEndDate() {
+		return _event.getEventEndDate();
+	}
+
+	/**
+	* Sets the event end date of this event.
+	*
+	* @param eventEndDate the event end date of this event
+	*/
+	@Override
+	public void setEventEndDate(java.util.Date eventEndDate) {
+		_event.setEventEndDate(eventEndDate);
 	}
 
 	/**

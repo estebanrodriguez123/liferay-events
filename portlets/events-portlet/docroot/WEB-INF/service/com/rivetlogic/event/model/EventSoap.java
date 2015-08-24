@@ -32,6 +32,7 @@ public class EventSoap implements Serializable {
 
 		soapModel.setUuid(model.getUuid());
 		soapModel.setEventId(model.getEventId());
+		soapModel.setCalendarBookingId(model.getCalendarBookingId());
 		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
@@ -39,6 +40,7 @@ public class EventSoap implements Serializable {
 		soapModel.setLocation(model.getLocation());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setEventDate(model.getEventDate());
+		soapModel.setEventEndDate(model.getEventEndDate());
 		soapModel.setPrivateEvent(model.getPrivateEvent());
 
 		return soapModel;
@@ -108,6 +110,14 @@ public class EventSoap implements Serializable {
 		_eventId = eventId;
 	}
 
+	public long getCalendarBookingId() {
+		return _calendarBookingId;
+	}
+
+	public void setCalendarBookingId(long calendarBookingId) {
+		_calendarBookingId = calendarBookingId;
+	}
+
 	public long getGroupId() {
 		return _groupId;
 	}
@@ -164,6 +174,14 @@ public class EventSoap implements Serializable {
 		_eventDate = eventDate;
 	}
 
+	public Date getEventEndDate() {
+		return _eventEndDate;
+	}
+
+	public void setEventEndDate(Date eventEndDate) {
+		_eventEndDate = eventEndDate;
+	}
+
 	public boolean getPrivateEvent() {
 		return _privateEvent;
 	}
@@ -178,6 +196,7 @@ public class EventSoap implements Serializable {
 
 	private String _uuid;
 	private long _eventId;
+	private long _calendarBookingId;
 	private long _groupId;
 	private long _companyId;
 	private long _userId;
@@ -185,5 +204,6 @@ public class EventSoap implements Serializable {
 	private String _location;
 	private String _description;
 	private Date _eventDate;
+	private Date _eventEndDate;
 	private boolean _privateEvent;
 }

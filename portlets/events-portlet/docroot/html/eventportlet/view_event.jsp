@@ -19,11 +19,16 @@
 */
 --%>
 
+<%@page import="com.liferay.portal.kernel.util.StringUtil"%>
+<%@page import="com.liferay.portal.model.Phone"%>
+<%@page import="com.rivetlogic.event.model.impl.ParticipantImpl"%>
+<%@page import="com.liferay.portal.model.User"%>
 <%@include file="/html/init.jsp" %>
 
 <%
 long resourcePrimKey = ParamUtil.getLong(request, EventPortletConstants.PARAMETER_RESOURCE_PRIMARY_KEY);
 Event event = (Event) renderRequest.getAttribute(WebKeys.EVENT_ENTRY);
+
 
 if (Validator.isNotNull(event)){
 %>

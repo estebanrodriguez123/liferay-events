@@ -19,6 +19,7 @@
 
 package com.rivetlogic.event.portlet;
 
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
@@ -28,6 +29,8 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.Layout;
+import com.liferay.portal.model.Phone;
+import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
@@ -36,6 +39,7 @@ import com.rivetlogic.event.beans.EventsPrefsBean;
 import com.rivetlogic.event.model.Event;
 import com.rivetlogic.event.model.Participant;
 import com.rivetlogic.event.model.Token;
+import com.rivetlogic.event.model.impl.ParticipantImpl;
 import com.rivetlogic.event.notification.constant.EventPortletConstants;
 import com.rivetlogic.event.notification.constant.NotificationConstants;
 import com.rivetlogic.event.notification.constant.PreferencesConstants;
@@ -59,6 +63,7 @@ import javax.portlet.ReadOnlyException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ValidatorException;
+import javax.servlet.jsp.JspPage;
 
 /**
  * @author charlesrodriguez
@@ -98,7 +103,6 @@ public class EventPortlet extends MVCPortlet {
     
     @Override
     public void doView(RenderRequest request, RenderResponse response) throws IOException, PortletException {
-        
         String jspPage = getInitParameter(VIEW_TEMPLATE);
         EventsPrefsBean prefBean = new EventsPrefsBean(request);
         
@@ -114,7 +118,6 @@ public class EventPortlet extends MVCPortlet {
     }
     
     public void registerUserToEvent(ActionRequest request, ActionResponse response) throws IOException {
-        
         Participant participant = EventActionUtil.getParticipantFromRequest(request);
         
         List<String> errors = new ArrayList<String>();
@@ -148,10 +151,34 @@ public class EventPortlet extends MVCPortlet {
     public void render(RenderRequest request, RenderResponse response) throws PortletException, IOException {
         
         String mvcPath = ParamUtil.getString(request, WebKeys.MVC_PATH);
-        
         if (mvcPath.equals(WebKeys.EVENT_VIEW_PAGE)) {
+        	ThemeDisplay themeDisplay  =(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+        	User user = themeDisplay.getUser();
+        	if(themeDisplay.isSignedIn()){
+				Participant participant = new ParticipantImpl();
+				participant.setFullName(user.getFullName());
+				participant.setEmail(user.getEmailAddress());
+	
+				try {
+					List<Phone> phones = user.getPhones();
+					if (phones.size() > 0) {
+						Phone phone = phones.get(0);
+						String phoneNumber = phone.getNumber();
+						if (phone.getExtension() != null
+								&& phone.getExtension().length() > 0) {
+							phoneNumber += " " + PHONE_EXTENSION_PREFIX + phone.getExtension();
+						}
+						participant.setPhoneNumber(phoneNumber);
+					}
+				} catch (SystemException e) {
+					_log.error(e.getMessage());
+				}
+				
+				request.setAttribute(WebKeys.PARTICIPANT_ENTRY, participant);
+        	}
+
             EventActionUtil.loadEvent(request, true);
-            // Remove default error messge
+            // Remove default error message
             SessionMessages.add(request, PortalUtil.getPortletId(request)
                     + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
         }
@@ -270,4 +297,5 @@ public class EventPortlet extends MVCPortlet {
     private static final String VIEW_TEMPLATE = "view-template";
     private static final String PARAMETER_STATUS = "status";
     private static final String CONFIRMATION_TEMPLATE = "confirmation-jsp";
+    private static final String PHONE_EXTENSION_PREFIX = "Ext.";
 }

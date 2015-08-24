@@ -90,6 +90,20 @@ public interface EventModel extends BaseModel<Event> {
 	public void setEventId(long eventId);
 
 	/**
+	 * Returns the calendar booking ID of this event.
+	 *
+	 * @return the calendar booking ID of this event
+	 */
+	public long getCalendarBookingId();
+
+	/**
+	 * Sets the calendar booking ID of this event.
+	 *
+	 * @param calendarBookingId the calendar booking ID of this event
+	 */
+	public void setCalendarBookingId(long calendarBookingId);
+
+	/**
 	 * Returns the group ID of this event.
 	 *
 	 * @return the group ID of this event
@@ -204,6 +218,20 @@ public interface EventModel extends BaseModel<Event> {
 	 * @param eventDate the event date of this event
 	 */
 	public void setEventDate(Date eventDate);
+
+	/**
+	 * Returns the event end date of this event.
+	 *
+	 * @return the event end date of this event
+	 */
+	public Date getEventEndDate();
+
+	/**
+	 * Sets the event end date of this event.
+	 *
+	 * @param eventEndDate the event end date of this event
+	 */
+	public void setEventEndDate(Date eventEndDate);
 
 	/**
 	 * Returns the private event of this event.

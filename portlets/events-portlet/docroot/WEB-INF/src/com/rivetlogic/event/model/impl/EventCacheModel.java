@@ -37,12 +37,14 @@ import java.util.Date;
 public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
 		sb.append(", eventId=");
 		sb.append(eventId);
+		sb.append(", calendarBookingId=");
+		sb.append(calendarBookingId);
 		sb.append(", groupId=");
 		sb.append(groupId);
 		sb.append(", companyId=");
@@ -57,6 +59,8 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		sb.append(description);
 		sb.append(", eventDate=");
 		sb.append(eventDate);
+		sb.append(", eventEndDate=");
+		sb.append(eventEndDate);
 		sb.append(", privateEvent=");
 		sb.append(privateEvent);
 		sb.append("}");
@@ -76,6 +80,7 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		}
 
 		eventImpl.setEventId(eventId);
+		eventImpl.setCalendarBookingId(calendarBookingId);
 		eventImpl.setGroupId(groupId);
 		eventImpl.setCompanyId(companyId);
 		eventImpl.setUserId(userId);
@@ -108,6 +113,13 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 			eventImpl.setEventDate(new Date(eventDate));
 		}
 
+		if (eventEndDate == Long.MIN_VALUE) {
+			eventImpl.setEventEndDate(null);
+		}
+		else {
+			eventImpl.setEventEndDate(new Date(eventEndDate));
+		}
+
 		eventImpl.setPrivateEvent(privateEvent);
 
 		eventImpl.resetOriginalValues();
@@ -119,6 +131,7 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		uuid = objectInput.readUTF();
 		eventId = objectInput.readLong();
+		calendarBookingId = objectInput.readLong();
 		groupId = objectInput.readLong();
 		companyId = objectInput.readLong();
 		userId = objectInput.readLong();
@@ -126,6 +139,7 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		location = objectInput.readUTF();
 		description = objectInput.readUTF();
 		eventDate = objectInput.readLong();
+		eventEndDate = objectInput.readLong();
 		privateEvent = objectInput.readBoolean();
 	}
 
@@ -140,6 +154,7 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		}
 
 		objectOutput.writeLong(eventId);
+		objectOutput.writeLong(calendarBookingId);
 		objectOutput.writeLong(groupId);
 		objectOutput.writeLong(companyId);
 		objectOutput.writeLong(userId);
@@ -166,11 +181,13 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		}
 
 		objectOutput.writeLong(eventDate);
+		objectOutput.writeLong(eventEndDate);
 		objectOutput.writeBoolean(privateEvent);
 	}
 
 	public String uuid;
 	public long eventId;
+	public long calendarBookingId;
 	public long groupId;
 	public long companyId;
 	public long userId;
@@ -178,5 +195,6 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	public String location;
 	public String description;
 	public long eventDate;
+	public long eventEndDate;
 	public boolean privateEvent;
 }

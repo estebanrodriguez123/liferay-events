@@ -345,6 +345,23 @@ public class EventLocalServiceWrapper implements EventLocalService,
 	}
 
 	@Override
+	public com.rivetlogic.event.model.Event addEvent(
+		com.rivetlogic.event.model.Event newEvent,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _eventLocalService.addEvent(newEvent, serviceContext);
+	}
+
+	@Override
+	public com.rivetlogic.event.model.Event updateEvent(
+		com.rivetlogic.event.model.Event event,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _eventLocalService.updateEvent(event, serviceContext);
+	}
+
+	@Override
 	public java.util.List<com.rivetlogic.event.model.Event> getPastEvents(
 		int start, int end) {
 		return _eventLocalService.getPastEvents(start, end);

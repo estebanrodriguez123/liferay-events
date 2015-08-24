@@ -63,6 +63,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "uuid_", Types.VARCHAR },
 			{ "eventId", Types.BIGINT },
+			{ "calendarBookingId", Types.BIGINT },
 			{ "groupId", Types.BIGINT },
 			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
@@ -70,9 +71,10 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 			{ "location", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
 			{ "eventDate", Types.TIMESTAMP },
+			{ "eventEndDate", Types.TIMESTAMP },
 			{ "privateEvent", Types.BOOLEAN }
 		};
-	public static final String TABLE_SQL_CREATE = "create table rivetlogic_event_Event (uuid_ VARCHAR(75) null,eventId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,name VARCHAR(400) null,location STRING null,description STRING null,eventDate DATE null,privateEvent BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table rivetlogic_event_Event (uuid_ VARCHAR(75) null,eventId LONG not null primary key,calendarBookingId LONG,groupId LONG,companyId LONG,userId LONG,name VARCHAR(400) null,location STRING null,description STRING null,eventDate DATE null,eventEndDate DATE null,privateEvent BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table rivetlogic_event_Event";
 	public static final String ORDER_BY_JPQL = " ORDER BY event.eventDate ASC, event.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY rivetlogic_event_Event.eventDate ASC, rivetlogic_event_Event.name ASC";
@@ -135,6 +137,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 		attributes.put("uuid", getUuid());
 		attributes.put("eventId", getEventId());
+		attributes.put("calendarBookingId", getCalendarBookingId());
 		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
@@ -142,6 +145,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		attributes.put("location", getLocation());
 		attributes.put("description", getDescription());
 		attributes.put("eventDate", getEventDate());
+		attributes.put("eventEndDate", getEventEndDate());
 		attributes.put("privateEvent", getPrivateEvent());
 
 		return attributes;
@@ -159,6 +163,12 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 		if (eventId != null) {
 			setEventId(eventId);
+		}
+
+		Long calendarBookingId = (Long)attributes.get("calendarBookingId");
+
+		if (calendarBookingId != null) {
+			setCalendarBookingId(calendarBookingId);
 		}
 
 		Long groupId = (Long)attributes.get("groupId");
@@ -203,6 +213,12 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 			setEventDate(eventDate);
 		}
 
+		Date eventEndDate = (Date)attributes.get("eventEndDate");
+
+		if (eventEndDate != null) {
+			setEventEndDate(eventEndDate);
+		}
+
 		Boolean privateEvent = (Boolean)attributes.get("privateEvent");
 
 		if (privateEvent != null) {
@@ -241,6 +257,16 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	@Override
 	public void setEventId(long eventId) {
 		_eventId = eventId;
+	}
+
+	@Override
+	public long getCalendarBookingId() {
+		return _calendarBookingId;
+	}
+
+	@Override
+	public void setCalendarBookingId(long calendarBookingId) {
+		_calendarBookingId = calendarBookingId;
 	}
 
 	@Override
@@ -367,6 +393,16 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	}
 
 	@Override
+	public Date getEventEndDate() {
+		return _eventEndDate;
+	}
+
+	@Override
+	public void setEventEndDate(Date eventEndDate) {
+		_eventEndDate = eventEndDate;
+	}
+
+	@Override
 	public boolean getPrivateEvent() {
 		return _privateEvent;
 	}
@@ -414,6 +450,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 		eventImpl.setUuid(getUuid());
 		eventImpl.setEventId(getEventId());
+		eventImpl.setCalendarBookingId(getCalendarBookingId());
 		eventImpl.setGroupId(getGroupId());
 		eventImpl.setCompanyId(getCompanyId());
 		eventImpl.setUserId(getUserId());
@@ -421,6 +458,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		eventImpl.setLocation(getLocation());
 		eventImpl.setDescription(getDescription());
 		eventImpl.setEventDate(getEventDate());
+		eventImpl.setEventEndDate(getEventEndDate());
 		eventImpl.setPrivateEvent(getPrivateEvent());
 
 		eventImpl.resetOriginalValues();
@@ -505,6 +543,8 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 		eventCacheModel.eventId = getEventId();
 
+		eventCacheModel.calendarBookingId = getCalendarBookingId();
+
 		eventCacheModel.groupId = getGroupId();
 
 		eventCacheModel.companyId = getCompanyId();
@@ -544,6 +584,15 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 			eventCacheModel.eventDate = Long.MIN_VALUE;
 		}
 
+		Date eventEndDate = getEventEndDate();
+
+		if (eventEndDate != null) {
+			eventCacheModel.eventEndDate = eventEndDate.getTime();
+		}
+		else {
+			eventCacheModel.eventEndDate = Long.MIN_VALUE;
+		}
+
 		eventCacheModel.privateEvent = getPrivateEvent();
 
 		return eventCacheModel;
@@ -551,12 +600,14 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
 		sb.append(", eventId=");
 		sb.append(getEventId());
+		sb.append(", calendarBookingId=");
+		sb.append(getCalendarBookingId());
 		sb.append(", groupId=");
 		sb.append(getGroupId());
 		sb.append(", companyId=");
@@ -571,6 +622,8 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		sb.append(getDescription());
 		sb.append(", eventDate=");
 		sb.append(getEventDate());
+		sb.append(", eventEndDate=");
+		sb.append(getEventEndDate());
 		sb.append(", privateEvent=");
 		sb.append(getPrivateEvent());
 		sb.append("}");
@@ -580,7 +633,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
+		StringBundler sb = new StringBundler(40);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.event.model.Event");
@@ -593,6 +646,10 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		sb.append(
 			"<column><column-name>eventId</column-name><column-value><![CDATA[");
 		sb.append(getEventId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>calendarBookingId</column-name><column-value><![CDATA[");
+		sb.append(getCalendarBookingId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>groupId</column-name><column-value><![CDATA[");
@@ -623,6 +680,10 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 		sb.append(getEventDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>eventEndDate</column-name><column-value><![CDATA[");
+		sb.append(getEventEndDate());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>privateEvent</column-name><column-value><![CDATA[");
 		sb.append(getPrivateEvent());
 		sb.append("]]></column-value></column>");
@@ -637,6 +698,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	private String _uuid;
 	private String _originalUuid;
 	private long _eventId;
+	private long _calendarBookingId;
 	private long _groupId;
 	private long _originalGroupId;
 	private boolean _setOriginalGroupId;
@@ -649,6 +711,7 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 	private String _location;
 	private String _description;
 	private Date _eventDate;
+	private Date _eventEndDate;
 	private boolean _privateEvent;
 	private long _columnBitmask;
 	private Event _escapedModel;

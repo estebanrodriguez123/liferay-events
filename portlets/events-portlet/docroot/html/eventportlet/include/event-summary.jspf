@@ -28,9 +28,13 @@ Format dateFormatTime = FastDateFormatFactoryUtil.getTime(locale);
 	<dt><liferay-ui:message key="event-name"/></dt>
 	<dd><%= event.getName() %></dd>
 
-	<dt><liferay-ui:message key="event-date"/></dt>
+	<dt><liferay-ui:message key="event-start-date"/></dt>
 	<dd><%= (Validator.isNotNull(event.getEventDate())) ? NotificationConstants.SDF.format(event.getEventDate()) : "" %></dd>
 
+	<c:if test="<%= Validator.isNotNull(event.getEventEndDate())%>">
+		<dt><liferay-ui:message key="event-end-date"/></dt>
+		<dd><%= (Validator.isNotNull(event.getEventEndDate())) ? NotificationConstants.SDF.format(event.getEventEndDate()) : "" %></dd>
+	</c:if>
 	<dt><liferay-ui:message key="event-start-time"/></dt>
 	<dd><%= (Validator.isNotNull(event.getEventDate())) ? dateFormatTime.format(event.getEventDate()) : "" %></dd>
 

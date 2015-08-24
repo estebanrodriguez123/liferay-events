@@ -77,6 +77,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 		attributes.put("uuid", getUuid());
 		attributes.put("eventId", getEventId());
+		attributes.put("calendarBookingId", getCalendarBookingId());
 		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
@@ -84,6 +85,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		attributes.put("location", getLocation());
 		attributes.put("description", getDescription());
 		attributes.put("eventDate", getEventDate());
+		attributes.put("eventEndDate", getEventEndDate());
 		attributes.put("privateEvent", getPrivateEvent());
 
 		return attributes;
@@ -101,6 +103,12 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 		if (eventId != null) {
 			setEventId(eventId);
+		}
+
+		Long calendarBookingId = (Long)attributes.get("calendarBookingId");
+
+		if (calendarBookingId != null) {
+			setCalendarBookingId(calendarBookingId);
 		}
 
 		Long groupId = (Long)attributes.get("groupId");
@@ -143,6 +151,12 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 		if (eventDate != null) {
 			setEventDate(eventDate);
+		}
+
+		Date eventEndDate = (Date)attributes.get("eventEndDate");
+
+		if (eventEndDate != null) {
+			setEventEndDate(eventEndDate);
 		}
 
 		Boolean privateEvent = (Boolean)attributes.get("privateEvent");
@@ -191,6 +205,30 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 				Method method = clazz.getMethod("setEventId", long.class);
 
 				method.invoke(_eventRemoteModel, eventId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public long getCalendarBookingId() {
+		return _calendarBookingId;
+	}
+
+	@Override
+	public void setCalendarBookingId(long calendarBookingId) {
+		_calendarBookingId = calendarBookingId;
+
+		if (_eventRemoteModel != null) {
+			try {
+				Class<?> clazz = _eventRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setCalendarBookingId",
+						long.class);
+
+				method.invoke(_eventRemoteModel, calendarBookingId);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -370,6 +408,29 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 	}
 
 	@Override
+	public Date getEventEndDate() {
+		return _eventEndDate;
+	}
+
+	@Override
+	public void setEventEndDate(Date eventEndDate) {
+		_eventEndDate = eventEndDate;
+
+		if (_eventRemoteModel != null) {
+			try {
+				Class<?> clazz = _eventRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setEventEndDate", Date.class);
+
+				method.invoke(_eventRemoteModel, eventEndDate);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public boolean getPrivateEvent() {
 		return _privateEvent;
 	}
@@ -526,6 +587,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 		clone.setUuid(getUuid());
 		clone.setEventId(getEventId());
+		clone.setCalendarBookingId(getCalendarBookingId());
 		clone.setGroupId(getGroupId());
 		clone.setCompanyId(getCompanyId());
 		clone.setUserId(getUserId());
@@ -533,6 +595,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		clone.setLocation(getLocation());
 		clone.setDescription(getDescription());
 		clone.setEventDate(getEventDate());
+		clone.setEventEndDate(getEventEndDate());
 		clone.setPrivateEvent(getPrivateEvent());
 
 		return clone;
@@ -586,12 +649,14 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
 		sb.append(", eventId=");
 		sb.append(getEventId());
+		sb.append(", calendarBookingId=");
+		sb.append(getCalendarBookingId());
 		sb.append(", groupId=");
 		sb.append(getGroupId());
 		sb.append(", companyId=");
@@ -606,6 +671,8 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		sb.append(getDescription());
 		sb.append(", eventDate=");
 		sb.append(getEventDate());
+		sb.append(", eventEndDate=");
+		sb.append(getEventEndDate());
 		sb.append(", privateEvent=");
 		sb.append(getPrivateEvent());
 		sb.append("}");
@@ -615,7 +682,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
+		StringBundler sb = new StringBundler(40);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.event.model.Event");
@@ -628,6 +695,10 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		sb.append(
 			"<column><column-name>eventId</column-name><column-value><![CDATA[");
 		sb.append(getEventId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>calendarBookingId</column-name><column-value><![CDATA[");
+		sb.append(getCalendarBookingId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>groupId</column-name><column-value><![CDATA[");
@@ -658,6 +729,10 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		sb.append(getEventDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>eventEndDate</column-name><column-value><![CDATA[");
+		sb.append(getEventEndDate());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>privateEvent</column-name><column-value><![CDATA[");
 		sb.append(getPrivateEvent());
 		sb.append("]]></column-value></column>");
@@ -669,6 +744,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	private String _uuid;
 	private long _eventId;
+	private long _calendarBookingId;
 	private long _groupId;
 	private long _companyId;
 	private long _userId;
@@ -677,6 +753,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 	private String _location;
 	private String _description;
 	private Date _eventDate;
+	private Date _eventEndDate;
 	private boolean _privateEvent;
 	private BaseModel<?> _eventRemoteModel;
 }

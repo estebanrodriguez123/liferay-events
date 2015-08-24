@@ -30,10 +30,18 @@ Format dateFormatDate = FastDateFormatFactoryUtil.getSimpleDateFormat("MM/dd/yyy
 Calendar valueDate = null;
 String eventDate = StringPool.BLANK;
 
+Calendar valueEndDate = null;
+String eventEndDate = StringPool.BLANK;
+
 if (Validator.isNotNull(event.getEventDate())) {
 	eventDate = dateFormatDate.format(event.getEventDate());
 	valueDate = Calendar.getInstance();
 	valueDate.setTime(event.getEventDate()); 
+}
+if (Validator.isNotNull(event.getEventEndDate())) {
+	eventEndDate = dateFormatDate.format(event.getEventEndDate());
+	valueEndDate = Calendar.getInstance();
+	valueEndDate.setTime(event.getEventEndDate()); 
 }
 %>
 
@@ -41,10 +49,15 @@ if (Validator.isNotNull(event.getEventDate())) {
 <liferay-ui:error key="event-name-required" message="event-name-required" />
 <liferay-ui:error key="event-location-required" message="event-location-required" />
 <liferay-ui:error key="event-description-required" message="event-description-required" />
-<liferay-ui:error key="event-date-required" message="event-date-required" />
-<liferay-ui:error key="event-invalid-date" message="event-invalid-date" />
+<liferay-ui:error key="event-start-date-required" message="event-start-date-required" />
+<liferay-ui:error key="event-end-date-required" message="event-end-date-required" />
+<liferay-ui:error key="event-invalid-start-date" message="event-invalid-start-date" />
+<liferay-ui:error key="event-invalid-end-date" message="event-invalid-end-date" />
+<liferay-ui:error key="start-date-before-start-date" message="start-date-before-start-date" />
+
 <liferay-ui:error key="event-date-in-future" message="event-date-in-future" />
-<liferay-ui:error key="event-hour-required" message="event-hour-required" />
+<liferay-ui:error key="event-start-hour-required" message="event-start-hour-required" />
+<liferay-ui:error key="event-end-hour-required" message="event-end-hour-required" />
 <liferay-ui:error key="error-processing-csv" message="error-processing-csv" />
 <liferay-ui:error key="invalid-csv-file" message="invalid-csv-file" />
 <liferay-ui:error key="no-such-event" message='<%=LanguageUtil.format(pageContext, "no-such-event", String.valueOf(resourcePrimKey)) %>' />
@@ -86,49 +99,88 @@ if (Validator.isNotNull(event.getEventDate())) {
 				<aui:input name="<%=EventPortletConstants.PARAMETER_EVENT%>" label="event-private-question" type="checkbox" value="${event.privateEvent}"/>
 			</aui:field-wrapper>
 			<aui:input name="<%=EventPortletConstants.PARAMETER_NAME%>" label="participant-name" type="text" value="${event.name}">
-				<aui:validator name="required"/>
+				<!-- aui:validator name="required"/-->
 			</aui:input>
 			<aui:input name="<%=EventPortletConstants.PARAMETER_LOCATION%>" label="event-location" type="textarea" value="${event.location}">
-				<aui:validator name="required"/>
+				<!--aui:validator name="required"/-->
 			</aui:input>
     	</aui:fieldset>
     	
     	<aui:fieldset label="event-date">
     	
 	        <aui:input name="<%=EventPortletConstants.PARAMETER_EVENT_DATE%>" label="" value="<%=eventDate%>" type="text" inlineField="<%=true%>">
-	        	<aui:validator name="required"/>
+	        	<!--aui:validator name="required"/-->
+	        </aui:input>
+			<span class="control-group">
+				<c:choose>
+					<c:when test="<%= Validator.isNotNull(valueDate) %>">
+						<liferay-ui:input-time
+							name="startTime"
+							amPmParam="startAmpm" 
+							hourParam="startHour" 
+							minuteParam="startMin" 
+							minuteInterval="30"
+							hourValue="<%=valueDate.get(Calendar.HOUR)%>" 
+							minuteValue="<%=valueDate.get(Calendar.MINUTE)%>"
+							amPmValue="<%=valueDate.get(Calendar.AM_PM)%>"
+							cssClass="event-hour"
+						/>
+					</c:when>
+					<c:otherwise>
+						<liferay-ui:input-time 
+							name="startTime"
+							amPmParam="startAmpm" 
+							hourParam="startHour" 
+							minuteParam="startMin" 
+							minuteInterval="30"
+							cssClass="event-hour"
+						/>
+					</c:otherwise>
+				</c:choose>
+			</span>
+
+		</aui:fieldset>
+    	
+    	<aui:fieldset label="event-end-date">
+    	
+	        <aui:input name="<%=EventPortletConstants.PARAMETER_EVENT_END_DATE%>" label="" value="<%=eventEndDate%>" type="text" inlineField="<%=true%>">
+	        	<!--aui:validator name="required"/-->
 	        </aui:input>
 		
-			<c:choose>
-				<c:when test="<%= Validator.isNotNull(valueDate) %>">
-					<liferay-ui:input-time 
-						amPmParam="ampm" 
-						hourParam="hour" 
-						minuteParam="min" 
-						minuteInterval="30"
-						hourValue="<%=valueDate.get(Calendar.HOUR)%>" 
-						minuteValue="<%=valueDate.get(Calendar.MINUTE)%>"
-						amPmValue="<%=valueDate.get(Calendar.AM_PM)%>"
-						cssClass="event-hour"
-					/>
-				</c:when>
-				<c:otherwise>
-					<liferay-ui:input-time 
-						amPmParam="ampm" 
-						hourParam="hour" 
-						minuteParam="min" 
-						minuteInterval="30"
-						cssClass="event-hour"
-					/>
-				</c:otherwise>
-			</c:choose>		
+			<span class="control-group">
+				<c:choose>
+					<c:when test="<%= Validator.isNotNull(valueEndDate) %>">
+						<liferay-ui:input-time
+							name="endTime"
+							amPmParam="endAmpm" 
+							hourParam="endHour" 
+							minuteParam="endMin" 
+							minuteInterval="30"
+							hourValue="<%=valueEndDate.get(Calendar.HOUR)%>" 
+							minuteValue="<%=valueEndDate.get(Calendar.MINUTE)%>"
+							amPmValue="<%=valueEndDate.get(Calendar.AM_PM)%>"
+							cssClass="event-hour"
+						/>
+					</c:when>
+					<c:otherwise>
+						<liferay-ui:input-time
+							name="endTime" 
+							amPmParam="endAmpm" 
+							hourParam="endHour" 
+							minuteParam="endMin" 
+							minuteInterval="30"
+							cssClass="event-hour"
+						/>
+					</c:otherwise>
+				</c:choose>
+			</span>
 
 		</aui:fieldset>
 		
 		<aui:fieldset label="event-description">
 			<aui:field-wrapper>
 				<aui:input name="<%=EventPortletConstants.PARAMETER_DESCRIPTION%>" label="" type="hidden" value="${event.description}">
-					<aui:validator name="required"/>
+					<!-- aui:validator name="required"/-->
 				</aui:input>
 				<liferay-ui:input-editor toolbarSet="liferay"/>
 			</aui:field-wrapper>

@@ -61,7 +61,12 @@
 				<liferay-ui:search-container-column-text name="event-name" property="name" href="${editEvent}" />
 				
 				<liferay-ui:search-container-column-text name="event-date" buffer="buffer">
-					<% buffer.append(NotificationConstants.SDF.format(event.getEventDate())); %>
+					<% 
+						buffer.append(NotificationConstants.SDF.format(event.getEventDate()));
+						if(Validator.isNotNull(event.getEventEndDate())) {
+							buffer.append(EventPortletConstants.START_END_DATES_SEPARATOR).append(NotificationConstants.SDF.format(event.getEventEndDate()));
+						}
+					%>
 				</liferay-ui:search-container-column-text>
 				
 				<liferay-ui:search-container-column-jsp path="/html/eventManagementPortlet/include/events-actions.jsp"/>

@@ -32,6 +32,8 @@ import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
@@ -126,7 +128,9 @@ public class EventsManagementPortlet extends MVCPortlet {
         
         ThemeDisplay themeDisplay = (ThemeDisplay) upreq.getAttribute(WebKeys.THEME_DISPLAY);
         
-        Calendar newEventDate = getDateFromRequest(request, upreq, themeDisplay);
+        Calendar newEventDate = getDateFromRequest(request, upreq, themeDisplay, true);
+        Calendar newEventEndDate = getDateFromRequest(request, upreq, themeDisplay, false);
+        validateStartEndDate(request, newEventDate, newEventEndDate);
         
         EventImpl event = new EventImpl();
         event.setCompanyId(themeDisplay.getCompanyId());
@@ -137,6 +141,7 @@ public class EventsManagementPortlet extends MVCPortlet {
         event.setLocation(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_LOCATION));
         event.setDescription(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_DESCRIPTION));
         event.setEventDate(newEventDate.getTime());
+        event.setEventEndDate(newEventEndDate.getTime());
         event.setPrivateEvent(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_EVENT));
         
         List<String> errors = new ArrayList<String>();
@@ -308,8 +313,10 @@ public class EventsManagementPortlet extends MVCPortlet {
         UploadPortletRequest upreq = PortalUtil.getUploadPortletRequest(request);
         
         ThemeDisplay themeDisplay = (ThemeDisplay) upreq.getAttribute(WebKeys.THEME_DISPLAY);
-        
-        Calendar newEventDate = getDateFromRequest(request, upreq, themeDisplay);
+
+        Calendar newEventDate = getDateFromRequest(request, upreq, themeDisplay, true);
+        Calendar newEventEndDate = getDateFromRequest(request, upreq, themeDisplay, false);
+        validateStartEndDate(request, newEventDate, newEventEndDate);
         
         Event dbEvent = EventLocalServiceUtil.getEvent(ParamUtil.getLong(upreq,
                 EventPortletConstants.PARAMETER_RESOURCE_PRIMARY_KEY));
@@ -320,6 +327,7 @@ public class EventsManagementPortlet extends MVCPortlet {
         event.setLocation(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_LOCATION));
         event.setDescription(ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_DESCRIPTION));
         event.setEventDate(newEventDate.getTime());
+        event.setEventEndDate(newEventEndDate.getTime());
         event.setPrivateEvent(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_EVENT));
         
         List<String> errors = new ArrayList<String>();
@@ -339,13 +347,39 @@ public class EventsManagementPortlet extends MVCPortlet {
         return event;
     }
     
-    private Calendar getDateFromRequest(ActionRequest request, UploadPortletRequest upreq, ThemeDisplay themeDisplay) {
+	private void validateStartEndDate(PortletRequest request, Calendar startDate, Calendar endDate) {
+		if (startDate == null || endDate == null) {
+			return;
+		}
+		if (!startDate.before(endDate)) {
+			SessionErrors.add(request, ERROR_START_DATE_BEFORE_END_DATE);
+		}
+	}
+    
+    private Calendar getDateFromRequest(ActionRequest request, UploadPortletRequest upreq, ThemeDisplay themeDisplay, boolean start) {
         
         Calendar calendar = new GregorianCalendar();
         
         boolean dateIsValid = false;
         
-        String eventDateString = ParamUtil.getString(upreq, EventPortletConstants.PARAMETER_EVENT_DATE);
+        String dateParameterName = null;
+        String ampmParameterName = null;
+        String hourParameterName = null;
+        String minParameterName = null;
+        		
+		if(start) {
+			dateParameterName = EventPortletConstants.PARAMETER_EVENT_DATE;
+			ampmParameterName = EventPortletConstants.PARAMETER_START_AMPM;
+			hourParameterName = EventPortletConstants.PARAMETER_START_HOUR;
+			minParameterName = EventPortletConstants.PARAMETER_START_MIN;
+		} else {
+			dateParameterName = EventPortletConstants.PARAMETER_EVENT_END_DATE;
+			ampmParameterName = EventPortletConstants.PARAMETER_END_AMPM;
+			hourParameterName = EventPortletConstants.PARAMETER_END_HOUR;
+			minParameterName = EventPortletConstants.PARAMETER_END_MIN;
+		}
+        
+        String eventDateString = ParamUtil.getString(upreq, dateParameterName);
         
         if (Validator.isNotNull(eventDateString)) {
             DateFormat dateFormat = new SimpleDateFormat(SIMPLE_DATE_FORMAT);
@@ -354,17 +388,17 @@ public class EventsManagementPortlet extends MVCPortlet {
                 calendar.setTime(date);
                 dateIsValid = true;
             } catch (ParseException e) {
-                SessionErrors.add(request, ERROR_INVALID_DATE);
+                SessionErrors.add(request, start ? ERROR_INVALID_START_DATE : ERROR_INVALID_END_DATE);
             }
             
         } else {
-            SessionErrors.add(request, ERROR_DATE_REQUIRED);
+            SessionErrors.add(request, start ? ERROR_START_DATE_REQUIRED : ERROR_END_DATE_REQUIRED);
         }
         
-        int ampm = ParamUtil.getInteger(upreq, EventPortletConstants.PARAMETER_AMPM, -1);
-        int hour = ParamUtil.getInteger(upreq, EventPortletConstants.PARAMETER_HOUR, -1);
-        int min = ParamUtil.getInteger(upreq, EventPortletConstants.PARAMETER_MIN, -1);
-        
+        int ampm = ParamUtil.getInteger(upreq, ampmParameterName, -1);
+        int hour = ParamUtil.getInteger(upreq, hourParameterName, -1);
+        int min = ParamUtil.getInteger(upreq, minParameterName, -1);
+
         if (ampm != -1 && hour != -1 && min != -1) {
             if (ampm == 1) {
                 // hour += 12;
@@ -374,7 +408,7 @@ public class EventsManagementPortlet extends MVCPortlet {
             calendar.set(Calendar.MINUTE, min);
         } else {
             dateIsValid = false;
-            SessionErrors.add(request, ERROR_HOUR_REQUIRED);
+            SessionErrors.add(request, start ? ERROR_START_HOUR_REQUIRED : ERROR_END_HOUR_REQUIRED);
         }
         
         if (dateIsValid) {
@@ -493,8 +527,12 @@ public class EventsManagementPortlet extends MVCPortlet {
     private void saveEditEventChanges(Event event, List<Participant> participants, boolean useCSV,
             boolean eventChanged, ThemeDisplay themeDisplay, ActionRequest request) {
         
-        try {
-            EventLocalServiceUtil.updateEvent(event);
+		try {
+			ServiceContext serviceContext = ServiceContextFactory.getInstance(
+					Event.class.getName(), request);
+            serviceContext.setScopeGroupId(themeDisplay.getScopeGroupId());
+            serviceContext.setUserId(themeDisplay.getUserId());
+            EventLocalServiceUtil.updateEvent(event, serviceContext);
             
             if (useCSV) {
                 calculateInvitations(request, event, participants, themeDisplay, eventChanged);
@@ -520,7 +558,11 @@ public class EventsManagementPortlet extends MVCPortlet {
     private void saveNewEvent(ActionRequest request, ThemeDisplay themeDisplay, Event event,
             List<Participant> participants) {
         try {
-            Event eventAdded = EventLocalServiceUtil.addEvent(event);
+        	ServiceContext serviceContext = ServiceContextFactory.getInstance(
+					Event.class.getName(), request);
+            serviceContext.setScopeGroupId(themeDisplay.getScopeGroupId());
+            serviceContext.setUserId(themeDisplay.getUserId());
+            Event eventAdded = EventLocalServiceUtil.addEvent(event, serviceContext);
             for (Participant participant : participants) {
                 participant.setEventId(eventAdded.getEventId());
                 ParticipantLocalServiceUtil.addParticipant(participant);
@@ -665,10 +707,14 @@ public class EventsManagementPortlet extends MVCPortlet {
     private static final String ERROR_SAVE_EVENT = "event-save-error";
     private static final String ERROR_INVALID_CSV = "invalid-csv-file";
     private static final String ERROR_PROCESING_CSV = "error-processing-csv";
-    private static final String ERROR_HOUR_REQUIRED = "event-hour-required";
+    private static final String ERROR_START_HOUR_REQUIRED = "event-start-hour-required";
+    private static final String ERROR_END_HOUR_REQUIRED = "event-end-hour-required";
     private static final String ERROR_DATE_FUTURE = "event-date-in-future";
-    private static final String ERROR_INVALID_DATE = "event-invalid-date";
-    private static final String ERROR_DATE_REQUIRED = "event-date-required";
+    private static final String ERROR_INVALID_START_DATE = "event-invalid-start-date";
+    private static final String ERROR_INVALID_END_DATE = "event-invalid-end-date";
+    private static final String ERROR_START_DATE_REQUIRED = "event-start-date-required";
+    private static final String ERROR_END_DATE_REQUIRED = "event-end-date-required";
+    private static final String ERROR_START_DATE_BEFORE_END_DATE = "start-date-before-start-date";
     private static final String ERROR_REQUEST_MISSING_EVENTID = "Error on request eventId is not present";
     private static final String DEBUG_MESSAGE_MIME_TYPE = "File MIME type: ";
     private static final String DEBUG_NEW_PARTICIPANTS = "newParticipants: ";

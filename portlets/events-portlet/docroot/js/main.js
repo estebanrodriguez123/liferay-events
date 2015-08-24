@@ -33,6 +33,72 @@ AUI.add(
 				instance.container = box;
 				
 				instance.setComponents();
+
+				instance.form.one("#" + instance.namespace + "startTime").on('blur', function() {
+					instance.validator.validateField(instance.namespace + 'endTime');
+				});
+				instance.form.one("#" + instance.namespace + "endTime").on('blur', function() {
+					instance.validator.validateField(instance.namespace + 'startTime');
+				});
+			},
+			getDate : function(form, instance, fieldName) {
+				var node = form.one('[name=' + instance.namespace + fieldName + ']');
+				var dateValue = null;
+				var nodePickerSelection = node.getData().datepickerSelection;
+				if(nodePickerSelection) {
+					dateValue = nodePickerSelection[0];
+					if(dateValue) {
+						dateValue.setHours(0,0,0,0);
+					}
+				}
+				return dateValue;
+			},
+			endDateGreaterThanStartDate : function(form, instance) {
+				var startDate = instance.getDate(form, instance, 'eventDate');
+				var endDate = instance.getDate(form, instance, 'eventEndDate');
+				
+				if(!startDate || !endDate) {
+					return false;
+				}
+				
+				return startDate <= endDate;
+			},
+			endTimeGreaterThanStartTime : function(form, instance) {
+				var startDate = instance.getDate(form, instance, 'eventDate');
+				var endDate = instance.getDate(form, instance, 'eventEndDate');
+
+				if(!startDate || !endDate) {
+					return true;
+				}
+				
+				if(startDate.getTime() != endDate.getTime()) {
+					return true;
+				}
+				
+				var startAmpm = form.one('[name=' + instance.namespace + 'startAmpm]').val();
+				var endAmpm = form.one('[name=' + instance.namespace + 'endAmpm]').val();
+				
+				var startHour= form.one('[name=' + instance.namespace + 'startHour]').val();
+				var endHour = form.one('[name=' + instance.namespace + 'endHour]').val();
+				
+				var startMinutes = form.one('[name=' + instance.namespace + 'startMin]').val();
+				var endMinutes = form.one('[name=' + instance.namespace + 'endMin]').val();
+				
+				if(startAmpm < endAmpm) {
+					return true;
+				}
+				
+				if(endAmpm < startAmpm) {
+					return false;
+				}
+				
+				if(startHour < endHour) {
+					return true;
+				}
+				if(startHour > endHour) {
+					return false;
+				}
+				return startMinutes < endMinutes;
 			},
 			
 			setComponents: function(container) {
@@ -41,7 +107,8 @@ AUI.add(
 				instance.setValidator();
 				instance.setFormAction();
 				instance.setParticipantsAutoFields();
-				instance.setDatepicker();
+				instance.setDatepicker('eventDate');
+				instance.setDatepicker('eventEndDate');
 			},
 			
 			setValidator: function() {
@@ -58,11 +125,6 @@ AUI.add(
 					required: true
 	        	};
 				
-				validatorValues.rules[instance.namespace + 'eventDate'] =  {
-					required: true,
-					date: true
-		        };
-				
 				//time
 				validatorValues.rules[instance.namespace] =  {
 					required: true
@@ -75,6 +137,56 @@ AUI.add(
 				validatorValues.rules[instance.namespace + 'description'] =  {
 					required: true
 				};
+				
+				validatorValues.rules[instance.namespace + 'file'] = {
+					acceptFiles: '.csv'	
+				};
+				
+				var compareStartEndDates = function(val, fieldNode, ruleValue) {
+					return instance.endDateGreaterThanStartDate(form, instance);
+				};
+				
+				var compareStartEndTimes = function(val, fieldNode, ruleValue) {
+					return instance.endTimeGreaterThanStartTime(form, instance);
+				}
+
+				A.config.FormValidator.RULES.greaterThanStartDate = compareStartEndDates;
+				A.config.FormValidator.RULES.lessThanEndDate = compareStartEndDates;
+
+				A.config.FormValidator.RULES.greaterThanStartTime = compareStartEndTimes;
+				A.config.FormValidator.RULES.lessThanEndTime = compareStartEndTimes;
+
+				A.config.FormValidator.STRINGS.greaterThanStartDate = Liferay.Language.get('end-date-after-start-date');
+				A.config.FormValidator.STRINGS.lessThanEndDate = Liferay.Language.get('start-date-before-start-date');
+
+				A.config.FormValidator.STRINGS.greaterThanStartTime = Liferay.Language.get('end-time-after-start-time');
+				A.config.FormValidator.STRINGS.lessThanEndTime = Liferay.Language.get('start-time-before-start-time');
+
+				validatorValues.rules[instance.namespace + 'startTime'] =  {
+					lessThanEndTime: true
+				};
+				validatorValues.rules[instance.namespace + 'endTime'] =  {
+					greaterThanStartTime: true
+				};
+				
+				validatorValues.rules[instance.namespace + 'eventDate'] =  {
+					required: true,
+					lessThanEndDate: true,
+					date: true
+		        };
+				
+				validatorValues.rules[instance.namespace + 'eventEndDate'] =  {
+					required: true,
+					greaterThanStartDate: true,
+					date: true
+	        	};
+				
+				
+				var form = A.one('#' + instance.namespace + "fm_edit_event");
+				if (form != null && form != '' && form != undefined) {
+					instance.validator = new A.FormValidator(validatorValues);
+					//validator.validate();
+				}
 				
 			},
 			
@@ -100,31 +212,34 @@ AUI.add(
 				);
 			},
 			
-			setDatepicker: function() {
+			setDatepicker: function(fieldName) {
 				var instance = this;
 				
 				Liferay.component(
-					instance.namespace + "eventDatePicker",
+					instance.namespace + fieldName + "Picker",
 					function(){
 						var datePicker = new A.DatePicker({
-							trigger: '#'+ instance.namespace +'eventDate',
+							trigger: '#'+ instance.namespace + fieldName,
 							popover: {
 								zIndex: 1
 							},
 							calendar: {
 					        	 minimumDate: new Date(),
 					        },
+					        after: {
+					        	selectionChange: function(e) {
+					        		instance.validator.validateField(instance.namespace + 'eventDate');
+					        		instance.validator.validateField(instance.namespace + 'eventEndDate');
+					        		
+					        		instance.validator.validateField(instance.namespace + 'startTime');
+					        		instance.validator.validateField(instance.namespace + 'endTime');
+					        	}
+					        },
 					        on: {
 					        	disabledChange: function(e){
 					        		console.info('disable');
 					        	},
-					        	selectionChange: function(e){
-					        		var eventDateInput = A.one('#'+ instance.namespace +'eventDate');
-									if (eventDateInput.hasClass('error-field') &&  e.newSelection[0] != null) {
-										eventDateInput.replaceClass('error-field', 'success-field');
-										eventDateInput.get('parentNode').replaceClass('error', 'success');
-										eventDateInput.get('parentNode').one('.help-inline .required').set('text', '');
-									} 
+					        	selectionChange: function(e) {
 					        	}
 					        }
 						});
@@ -133,7 +248,7 @@ AUI.add(
 					}
 				);
 				
-				Liferay.component(instance.namespace + "eventDatePicker");
+				Liferay.component(instance.namespace + fieldName + "Picker");
 			},
 			
 			setParticipantsAutoFields: function(){

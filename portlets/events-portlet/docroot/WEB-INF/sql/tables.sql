@@ -1,6 +1,7 @@
 create table rivetlogic_event_Event (
 	uuid_ VARCHAR(75) null,
 	eventId LONG not null primary key,
+	calendarBookingId LONG,
 	groupId LONG,
 	companyId LONG,
 	userId LONG,
@@ -8,6 +9,7 @@ create table rivetlogic_event_Event (
 	location STRING null,
 	description STRING null,
 	eventDate DATE null,
+	eventEndDate DATE null,
 	privateEvent BOOLEAN
 );
 

@@ -126,29 +126,43 @@ public class EventLocalServiceClp implements EventLocalService {
 
 		_methodParameterTypes21 = new String[] { "java.lang.String" };
 
-		_methodName23 = "getPastEvents";
+		_methodName23 = "addEvent";
 
-		_methodParameterTypes23 = new String[] { "int", "int" };
+		_methodParameterTypes23 = new String[] {
+				"com.rivetlogic.event.model.Event",
+				"com.liferay.portal.service.ServiceContext"
+			};
 
-		_methodName24 = "getPastEventsCount";
+		_methodName24 = "updateEvent";
 
-		_methodParameterTypes24 = new String[] {  };
+		_methodParameterTypes24 = new String[] {
+				"com.rivetlogic.event.model.Event",
+				"com.liferay.portal.service.ServiceContext"
+			};
 
-		_methodName25 = "getUpcomingEvents";
+		_methodName25 = "getPastEvents";
 
 		_methodParameterTypes25 = new String[] { "int", "int" };
 
-		_methodName26 = "getUpcomingEventsCount";
+		_methodName26 = "getPastEventsCount";
 
 		_methodParameterTypes26 = new String[] {  };
 
-		_methodName27 = "getPublicEvents";
+		_methodName27 = "getUpcomingEvents";
 
 		_methodParameterTypes27 = new String[] { "int", "int" };
 
-		_methodName28 = "getPublicEventsCount";
+		_methodName28 = "getUpcomingEventsCount";
 
 		_methodParameterTypes28 = new String[] {  };
+
+		_methodName29 = "getPublicEvents";
+
+		_methodParameterTypes29 = new String[] { "int", "int" };
+
+		_methodName30 = "getPublicEventsCount";
+
+		_methodParameterTypes30 = new String[] {  };
 	}
 
 	@Override
@@ -828,16 +842,32 @@ public class EventLocalServiceClp implements EventLocalService {
 	}
 
 	@Override
-	public java.util.List<com.rivetlogic.event.model.Event> getPastEvents(
-		int start, int end) {
+	public com.rivetlogic.event.model.Event addEvent(
+		com.rivetlogic.event.model.Event newEvent,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23, new Object[] { start, end });
+					_methodParameterTypes23,
+					new Object[] {
+						ClpSerializer.translateInput(newEvent),
+						
+					ClpSerializer.translateInput(serviceContext)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -848,19 +878,31 @@ public class EventLocalServiceClp implements EventLocalService {
 			}
 		}
 
-		return (java.util.List<com.rivetlogic.event.model.Event>)ClpSerializer.translateOutput(returnObj);
+		return (com.rivetlogic.event.model.Event)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
-	public int getPastEventsCount() {
+	public com.rivetlogic.event.model.Event updateEvent(
+		com.rivetlogic.event.model.Event event,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24, new Object[] {  });
+					_methodParameterTypes24,
+					new Object[] {
+						ClpSerializer.translateInput(event),
+						
+					ClpSerializer.translateInput(serviceContext)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -871,11 +913,11 @@ public class EventLocalServiceClp implements EventLocalService {
 			}
 		}
 
-		return ((Integer)returnObj).intValue();
+		return (com.rivetlogic.event.model.Event)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
-	public java.util.List<com.rivetlogic.event.model.Event> getUpcomingEvents(
+	public java.util.List<com.rivetlogic.event.model.Event> getPastEvents(
 		int start, int end) {
 		Object returnObj = null;
 
@@ -899,7 +941,7 @@ public class EventLocalServiceClp implements EventLocalService {
 	}
 
 	@Override
-	public int getUpcomingEventsCount() {
+	public int getPastEventsCount() {
 		Object returnObj = null;
 
 		try {
@@ -922,7 +964,7 @@ public class EventLocalServiceClp implements EventLocalService {
 	}
 
 	@Override
-	public java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(
+	public java.util.List<com.rivetlogic.event.model.Event> getUpcomingEvents(
 		int start, int end) {
 		Object returnObj = null;
 
@@ -946,12 +988,59 @@ public class EventLocalServiceClp implements EventLocalService {
 	}
 
 	@Override
-	public int getPublicEventsCount() {
+	public int getUpcomingEventsCount() {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName28,
 					_methodParameterTypes28, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(
+		int start, int end) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29, new Object[] { start, end });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.rivetlogic.event.model.Event>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public int getPublicEventsCount() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1025,4 +1114,8 @@ public class EventLocalServiceClp implements EventLocalService {
 	private String[] _methodParameterTypes27;
 	private String _methodName28;
 	private String[] _methodParameterTypes28;
+	private String _methodName29;
+	private String[] _methodParameterTypes29;
+	private String _methodName30;
+	private String[] _methodParameterTypes30;
 }
