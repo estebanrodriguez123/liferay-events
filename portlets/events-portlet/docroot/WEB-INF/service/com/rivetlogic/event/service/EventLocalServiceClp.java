@@ -142,19 +142,19 @@ public class EventLocalServiceClp implements EventLocalService {
 
 		_methodName25 = "getPastEvents";
 
-		_methodParameterTypes25 = new String[] { "int", "int" };
+		_methodParameterTypes25 = new String[] { "int", "int", "long" };
 
 		_methodName26 = "getPastEventsCount";
 
-		_methodParameterTypes26 = new String[] {  };
+		_methodParameterTypes26 = new String[] { "long" };
 
 		_methodName27 = "getUpcomingEvents";
 
-		_methodParameterTypes27 = new String[] { "int", "int" };
+		_methodParameterTypes27 = new String[] { "int", "int", "long" };
 
 		_methodName28 = "getUpcomingEventsCount";
 
-		_methodParameterTypes28 = new String[] {  };
+		_methodParameterTypes28 = new String[] { "long" };
 
 		_methodName29 = "getPublicEvents";
 
@@ -918,12 +918,12 @@ public class EventLocalServiceClp implements EventLocalService {
 
 	@Override
 	public java.util.List<com.rivetlogic.event.model.Event> getPastEvents(
-		int start, int end) {
+		int start, int end, long userId) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25, new Object[] { start, end });
+					_methodParameterTypes25, new Object[] { start, end, userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -941,12 +941,12 @@ public class EventLocalServiceClp implements EventLocalService {
 	}
 
 	@Override
-	public int getPastEventsCount() {
+	public int getPastEventsCount(long userId) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26, new Object[] {  });
+					_methodParameterTypes26, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -965,12 +965,12 @@ public class EventLocalServiceClp implements EventLocalService {
 
 	@Override
 	public java.util.List<com.rivetlogic.event.model.Event> getUpcomingEvents(
-		int start, int end) {
+		int start, int end, long userId) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName27,
-					_methodParameterTypes27, new Object[] { start, end });
+					_methodParameterTypes27, new Object[] { start, end, userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -988,12 +988,12 @@ public class EventLocalServiceClp implements EventLocalService {
 	}
 
 	@Override
-	public int getUpcomingEventsCount() {
+	public int getUpcomingEventsCount(long userId) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName28,
-					_methodParameterTypes28, new Object[] {  });
+					_methodParameterTypes28, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

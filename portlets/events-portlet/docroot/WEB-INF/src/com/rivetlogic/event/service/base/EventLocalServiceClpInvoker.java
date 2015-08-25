@@ -152,27 +152,27 @@ public class EventLocalServiceClpInvoker {
 
 		_methodName58 = "getPastEvents";
 
-		_methodParameterTypes58 = new String[] { "int", "int" };
+		_methodParameterTypes58 = new String[] { "int", "int", "long" };
 
 		_methodName59 = "getPastEventsCount";
 
-		_methodParameterTypes59 = new String[] {  };
+		_methodParameterTypes59 = new String[] { "long" };
 
-		_methodName61 = "getUpcomingEvents";
+		_methodName62 = "getUpcomingEvents";
 
-		_methodParameterTypes61 = new String[] { "int", "int" };
+		_methodParameterTypes62 = new String[] { "int", "int", "long" };
 
-		_methodName62 = "getUpcomingEventsCount";
+		_methodName63 = "getUpcomingEventsCount";
 
-		_methodParameterTypes62 = new String[] {  };
+		_methodParameterTypes63 = new String[] { "long" };
 
-		_methodName64 = "getPublicEvents";
+		_methodName65 = "getPublicEvents";
 
-		_methodParameterTypes64 = new String[] { "int", "int" };
+		_methodParameterTypes65 = new String[] { "int", "int" };
 
-		_methodName65 = "getPublicEventsCount";
+		_methodName66 = "getPublicEventsCount";
 
-		_methodParameterTypes65 = new String[] {  };
+		_methodParameterTypes66 = new String[] {  };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -325,33 +325,35 @@ public class EventLocalServiceClpInvoker {
 		if (_methodName58.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes58, parameterTypes)) {
 			return EventLocalServiceUtil.getPastEvents(((Integer)arguments[0]).intValue(),
-				((Integer)arguments[1]).intValue());
+				((Integer)arguments[1]).intValue(),
+				((Long)arguments[2]).longValue());
 		}
 
 		if (_methodName59.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes59, parameterTypes)) {
-			return EventLocalServiceUtil.getPastEventsCount();
-		}
-
-		if (_methodName61.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes61, parameterTypes)) {
-			return EventLocalServiceUtil.getUpcomingEvents(((Integer)arguments[0]).intValue(),
-				((Integer)arguments[1]).intValue());
+			return EventLocalServiceUtil.getPastEventsCount(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName62.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes62, parameterTypes)) {
-			return EventLocalServiceUtil.getUpcomingEventsCount();
+			return EventLocalServiceUtil.getUpcomingEvents(((Integer)arguments[0]).intValue(),
+				((Integer)arguments[1]).intValue(),
+				((Long)arguments[2]).longValue());
 		}
 
-		if (_methodName64.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes64, parameterTypes)) {
-			return EventLocalServiceUtil.getPublicEvents(((Integer)arguments[0]).intValue(),
-				((Integer)arguments[1]).intValue());
+		if (_methodName63.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes63, parameterTypes)) {
+			return EventLocalServiceUtil.getUpcomingEventsCount(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName65.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes65, parameterTypes)) {
+			return EventLocalServiceUtil.getPublicEvents(((Integer)arguments[0]).intValue(),
+				((Integer)arguments[1]).intValue());
+		}
+
+		if (_methodName66.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes66, parameterTypes)) {
 			return EventLocalServiceUtil.getPublicEventsCount();
 		}
 
@@ -414,12 +416,12 @@ public class EventLocalServiceClpInvoker {
 	private String[] _methodParameterTypes58;
 	private String _methodName59;
 	private String[] _methodParameterTypes59;
-	private String _methodName61;
-	private String[] _methodParameterTypes61;
 	private String _methodName62;
 	private String[] _methodParameterTypes62;
-	private String _methodName64;
-	private String[] _methodParameterTypes64;
+	private String _methodName63;
+	private String[] _methodParameterTypes63;
 	private String _methodName65;
 	private String[] _methodParameterTypes65;
+	private String _methodName66;
+	private String[] _methodParameterTypes66;
 }

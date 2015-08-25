@@ -363,24 +363,24 @@ public class EventLocalServiceWrapper implements EventLocalService,
 
 	@Override
 	public java.util.List<com.rivetlogic.event.model.Event> getPastEvents(
-		int start, int end) {
-		return _eventLocalService.getPastEvents(start, end);
+		int start, int end, long userId) {
+		return _eventLocalService.getPastEvents(start, end, userId);
 	}
 
 	@Override
-	public int getPastEventsCount() {
-		return _eventLocalService.getPastEventsCount();
+	public int getPastEventsCount(long userId) {
+		return _eventLocalService.getPastEventsCount(userId);
 	}
 
 	@Override
 	public java.util.List<com.rivetlogic.event.model.Event> getUpcomingEvents(
-		int start, int end) {
-		return _eventLocalService.getUpcomingEvents(start, end);
+		int start, int end, long userId) {
+		return _eventLocalService.getUpcomingEvents(start, end, userId);
 	}
 
 	@Override
-	public int getUpcomingEventsCount() {
-		return _eventLocalService.getUpcomingEventsCount();
+	public int getUpcomingEventsCount(long userId) {
+		return _eventLocalService.getUpcomingEventsCount(userId);
 	}
 
 	@Override

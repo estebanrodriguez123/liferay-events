@@ -314,17 +314,17 @@ public interface EventLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.rivetlogic.event.model.Event> getPastEvents(
-		int start, int end);
+		int start, int end, long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getPastEventsCount();
+	public int getPastEventsCount(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.rivetlogic.event.model.Event> getUpcomingEvents(
-		int start, int end);
+		int start, int end, long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getUpcomingEventsCount();
+	public int getUpcomingEventsCount(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(

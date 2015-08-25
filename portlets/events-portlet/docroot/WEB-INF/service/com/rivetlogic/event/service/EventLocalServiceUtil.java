@@ -347,21 +347,21 @@ public class EventLocalServiceUtil {
 	}
 
 	public static java.util.List<com.rivetlogic.event.model.Event> getPastEvents(
-		int start, int end) {
-		return getService().getPastEvents(start, end);
+		int start, int end, long userId) {
+		return getService().getPastEvents(start, end, userId);
 	}
 
-	public static int getPastEventsCount() {
-		return getService().getPastEventsCount();
+	public static int getPastEventsCount(long userId) {
+		return getService().getPastEventsCount(userId);
 	}
 
 	public static java.util.List<com.rivetlogic.event.model.Event> getUpcomingEvents(
-		int start, int end) {
-		return getService().getUpcomingEvents(start, end);
+		int start, int end, long userId) {
+		return getService().getUpcomingEvents(start, end, userId);
 	}
 
-	public static int getUpcomingEventsCount() {
-		return getService().getUpcomingEventsCount();
+	public static int getUpcomingEventsCount(long userId) {
+		return getService().getUpcomingEventsCount(userId);
 	}
 
 	public static java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(

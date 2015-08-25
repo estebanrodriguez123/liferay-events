@@ -237,18 +237,19 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return dynamicQuery;
     }
     
-    private DynamicQuery getPastEventsDynamicQuery(boolean useOrder) {
+    private DynamicQuery getPastEventsDynamicQuery(boolean useOrder, long userId) {
         Date currentDate = new Date();
         Criterion criterion = RestrictionsFactoryUtil.le(EVENT_DATE_COLUMN, currentDate);
+        criterion = RestrictionsFactoryUtil.and(criterion, getOwnerOrPublicEventsCriterion(userId));
         return getEventsDynamicQuery(criterion, useOrder);
     }
     
     @SuppressWarnings("unchecked")
-    public List<Event> getPastEvents(int start, int end) {
+    public List<Event> getPastEvents(int start, int end, long userId) {
         
         List<Event> pastEvents = new ArrayList<Event>();
         
-        DynamicQuery dynamicQuery = getPastEventsDynamicQuery(true);
+        DynamicQuery dynamicQuery = getPastEventsDynamicQuery(true, userId);
         
         try {
             pastEvents = (List<Event>) eventPersistence.findWithDynamicQuery(dynamicQuery, start, end);
@@ -259,9 +260,9 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return pastEvents;
     }
     
-    public int getPastEventsCount() {
+    public int getPastEventsCount(long userId) {
         int result = 0;
-        DynamicQuery dynamicQuery = getPastEventsDynamicQuery(false);
+        DynamicQuery dynamicQuery = getPastEventsDynamicQuery(false, userId);
         try {
             result = (int) eventPersistence.countWithDynamicQuery(dynamicQuery);
         } catch (SystemException e) {
@@ -269,19 +270,35 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         }
         return result;
     }
+
+	private Criterion getOwnerOrPublicEventsCriterion(long userId) {
+		Criterion result = null;
+		Criterion publicEvent = RestrictionsFactoryUtil.eq(
+				EVENT_PRIVATE_COLUMN, false);
+
+		if (userId <= 0) {
+			result = publicEvent;
+		} else {
+			Criterion userEvents = RestrictionsFactoryUtil.eq(EVENT_USER_ID, userId);
+			result = RestrictionsFactoryUtil.or(userEvents, publicEvent);
+		}
+
+		return result;
+	}
     
-    private DynamicQuery getUpcomingEventsDynamicQuery(boolean useOrder) {
+    private DynamicQuery getUpcomingEventsDynamicQuery(boolean useOrder, long userId) {
         Date currentDate = new Date();
         Criterion criterion = RestrictionsFactoryUtil.ge(EVENT_DATE_COLUMN, currentDate);
+        criterion = RestrictionsFactoryUtil.and(criterion, getOwnerOrPublicEventsCriterion(userId));
         return getEventsDynamicQuery(criterion, useOrder);
     }
     
     @SuppressWarnings("unchecked")
-    public List<Event> getUpcomingEvents(int start, int end) {
+    public List<Event> getUpcomingEvents(int start, int end, long userId) {
         
         List<Event> upcomingEvents = new ArrayList<Event>();
         
-        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(true);
+        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(true, userId);
         
         try {
             upcomingEvents = (List<Event>) eventPersistence.findWithDynamicQuery(dynamicQuery, start, end);
@@ -292,9 +309,9 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return upcomingEvents;
     }
     
-    public int getUpcomingEventsCount() {
+    public int getUpcomingEventsCount(long userId) {
         int result = 0;
-        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(false);
+        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(false, userId);
         try {
             result = (int) eventPersistence.countWithDynamicQuery(dynamicQuery);
         } catch (SystemException e) {
@@ -303,8 +320,8 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return result;
     }
     
-    private DynamicQuery getPublicUpcomingEventsDynamicQuery(boolean useOrder) {
-        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(useOrder);
+    private DynamicQuery getPublicUpcomingEventsDynamicQuery(boolean useOrder, long userId) {
+        DynamicQuery dynamicQuery = getUpcomingEventsDynamicQuery(useOrder, userId);
         Criterion criterion = RestrictionsFactoryUtil.eq(EVENT_PRIVATE_COLUMN, false);
         dynamicQuery.add(criterion);
         return dynamicQuery;
@@ -315,7 +332,7 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         
         List<Event> publicEvents = new ArrayList<Event>();
         
-        DynamicQuery dynamicQuery = getPublicUpcomingEventsDynamicQuery(true);
+        DynamicQuery dynamicQuery = getPublicUpcomingEventsDynamicQuery(true, 0);
         
         try {
             publicEvents = (List<Event>) eventPersistence.findWithDynamicQuery(dynamicQuery, start, end);
@@ -329,7 +346,7 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
     public int getPublicEventsCount() {
         
         int result = 0;
-        DynamicQuery dynamicQuery = getPublicUpcomingEventsDynamicQuery(false);
+        DynamicQuery dynamicQuery = getPublicUpcomingEventsDynamicQuery(false, 0);
         try {
             result = (int) eventPersistence.countWithDynamicQuery(dynamicQuery);
         } catch (SystemException e) {
@@ -340,5 +357,6 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
     
     private static final String EVENT_DATE_COLUMN = "eventDate";
     private static final String EVENT_PRIVATE_COLUMN = "privateEvent";
+    private static final String EVENT_USER_ID = "userId";
     private static Log _log = LogFactoryUtil.getLog(EventLocalServiceImpl.class);
 }

@@ -45,8 +45,8 @@
 		emptyResultsMessage="event-empty-results" delta="${prefBean.numRows}" deltaConfigurable="true">
 		
 		<liferay-ui:search-container-results 
-			results="<%=EventLocalServiceUtil.getUpcomingEvents(searchContainer.getStart(), searchContainer.getEnd())%>"
-			total="<%=EventLocalServiceUtil.getUpcomingEventsCount()%>"
+			results="<%=EventLocalServiceUtil.getUpcomingEvents(searchContainer.getStart(), searchContainer.getEnd(), user.getUserId())%>"
+			total="<%=EventLocalServiceUtil.getUpcomingEventsCount(user.getUserId())%>"
 		/>
 	
 		<liferay-ui:search-container-row 

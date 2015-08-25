@@ -35,8 +35,8 @@
 		delta="${prefBean.numRows}" deltaConfigurable="true">
 		
 		<liferay-ui:search-container-results 
-			results="<%=EventLocalServiceUtil.getPastEvents(searchContainer.getStart(), searchContainer.getEnd())%>"
-			total="<%=EventLocalServiceUtil.getPastEventsCount()%>"
+			results="<%=EventLocalServiceUtil.getPastEvents(searchContainer.getStart(), searchContainer.getEnd(), user.getUserId())%>"
+			total="<%=EventLocalServiceUtil.getPastEventsCount(user.getUserId())%>"
 		/>
 	
 		<liferay-ui:search-container-row 
