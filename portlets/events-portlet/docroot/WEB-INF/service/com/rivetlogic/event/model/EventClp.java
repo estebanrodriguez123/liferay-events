@@ -78,6 +78,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		attributes.put("uuid", getUuid());
 		attributes.put("eventId", getEventId());
 		attributes.put("calendarBookingId", getCalendarBookingId());
+		attributes.put("calendarId", getCalendarId());
 		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
@@ -109,6 +110,12 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 		if (calendarBookingId != null) {
 			setCalendarBookingId(calendarBookingId);
+		}
+
+		Long calendarId = (Long)attributes.get("calendarId");
+
+		if (calendarId != null) {
+			setCalendarId(calendarId);
 		}
 
 		Long groupId = (Long)attributes.get("groupId");
@@ -229,6 +236,29 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 						long.class);
 
 				method.invoke(_eventRemoteModel, calendarBookingId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public long getCalendarId() {
+		return _calendarId;
+	}
+
+	@Override
+	public void setCalendarId(long calendarId) {
+		_calendarId = calendarId;
+
+		if (_eventRemoteModel != null) {
+			try {
+				Class<?> clazz = _eventRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setCalendarId", long.class);
+
+				method.invoke(_eventRemoteModel, calendarId);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -588,6 +618,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		clone.setUuid(getUuid());
 		clone.setEventId(getEventId());
 		clone.setCalendarBookingId(getCalendarBookingId());
+		clone.setCalendarId(getCalendarId());
 		clone.setGroupId(getGroupId());
 		clone.setCompanyId(getCompanyId());
 		clone.setUserId(getUserId());
@@ -649,7 +680,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -657,6 +688,8 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		sb.append(getEventId());
 		sb.append(", calendarBookingId=");
 		sb.append(getCalendarBookingId());
+		sb.append(", calendarId=");
+		sb.append(getCalendarId());
 		sb.append(", groupId=");
 		sb.append(getGroupId());
 		sb.append(", companyId=");
@@ -682,7 +715,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(40);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("<model><model-name>");
 		sb.append("com.rivetlogic.event.model.Event");
@@ -699,6 +732,10 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 		sb.append(
 			"<column><column-name>calendarBookingId</column-name><column-value><![CDATA[");
 		sb.append(getCalendarBookingId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>calendarId</column-name><column-value><![CDATA[");
+		sb.append(getCalendarId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>groupId</column-name><column-value><![CDATA[");
@@ -745,6 +782,7 @@ public class EventClp extends BaseModelImpl<Event> implements Event {
 	private String _uuid;
 	private long _eventId;
 	private long _calendarBookingId;
+	private long _calendarId;
 	private long _groupId;
 	private long _companyId;
 	private long _userId;

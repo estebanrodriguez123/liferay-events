@@ -133,6 +133,12 @@ public class EventLocalServiceClpInvoker {
 				"com.liferay.portal.service.ServiceContext"
 			};
 
+		_methodName51 = "getUserCalendar";
+
+		_methodParameterTypes51 = new String[] {
+				"long", "com.liferay.portal.service.ServiceContext"
+			};
+
 		_methodName53 = "updateEvent";
 
 		_methodParameterTypes53 = new String[] {
@@ -306,6 +312,12 @@ public class EventLocalServiceClpInvoker {
 				(com.liferay.portal.service.ServiceContext)arguments[1]);
 		}
 
+		if (_methodName51.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes51, parameterTypes)) {
+			return EventLocalServiceUtil.getUserCalendar(((Long)arguments[0]).longValue(),
+				(com.liferay.portal.service.ServiceContext)arguments[1]);
+		}
+
 		if (_methodName53.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes53, parameterTypes)) {
 			return EventLocalServiceUtil.updateEvent((com.rivetlogic.event.model.Event)arguments[0],
@@ -406,6 +418,8 @@ public class EventLocalServiceClpInvoker {
 	private String[] _methodParameterTypes45;
 	private String _methodName50;
 	private String[] _methodParameterTypes50;
+	private String _methodName51;
+	private String[] _methodParameterTypes51;
 	private String _methodName53;
 	private String[] _methodParameterTypes53;
 	private String _methodName54;

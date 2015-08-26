@@ -339,6 +339,13 @@ public class EventLocalServiceUtil {
 		return getService().addEvent(newEvent, serviceContext);
 	}
 
+	public static com.liferay.calendar.model.Calendar getUserCalendar(
+		long userId, com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getUserCalendar(userId, serviceContext);
+	}
+
 	public static com.rivetlogic.event.model.Event updateEvent(
 		com.rivetlogic.event.model.Event event,
 		com.liferay.portal.service.ServiceContext serviceContext)

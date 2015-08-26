@@ -19,10 +19,15 @@
 */
 --%>
 
+<%@page import="com.liferay.portal.security.permission.ActionKeys"%>
+<%@page import="com.liferay.calendar.util.comparator.CalendarNameComparator"%>
+<%@page import="com.liferay.portal.kernel.dao.orm.QueryUtil"%>
+<%@page import="com.liferay.calendar.service.CalendarServiceUtil"%>
+<%@page import="com.liferay.calendar.service.CalendarBookingLocalServiceUtil"%>
 <%@include file="/html/init.jsp" %>
 
 <%
-Event event = (Event) renderRequest.getAttribute(WebKeys.EVENT_ENTRY);
+	Event event = (Event) renderRequest.getAttribute(WebKeys.EVENT_ENTRY);
     		
 long resourcePrimKey = ParamUtil.getLong(request, EventPortletConstants.PARAMETER_RESOURCE_PRIMARY_KEY);
 
@@ -43,6 +48,15 @@ if (Validator.isNotNull(event.getEventEndDate())) {
 	valueEndDate = Calendar.getInstance();
 	valueEndDate.setTime(event.getEventEndDate()); 
 }
+
+List<com.liferay.calendar.model.Calendar> manageableCalendars = CalendarServiceUtil.search(
+		themeDisplay.getCompanyId(), null, null, null, true,
+		QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+		new CalendarNameComparator(true),
+		WebKeys.ACTION_KEY_MANAGE_BOOKINGS);
+
+long calendarId = event.getCalendarId();
+	
 %>
 
 <liferay-ui:error key="event-save-error" message="event-save-error" />
@@ -106,7 +120,7 @@ if (Validator.isNotNull(event.getEventEndDate())) {
 			</aui:input>
     	</aui:fieldset>
     	
-    	<aui:fieldset label="event-date">
+    	<aui:fieldset label="event-start-date">
     	
 	        <aui:input name="<%=EventPortletConstants.PARAMETER_EVENT_DATE%>" label="" value="<%=eventDate%>" type="text" inlineField="<%=true%>">
 	        	<!--aui:validator name="required"/-->
@@ -184,6 +198,20 @@ if (Validator.isNotNull(event.getEventEndDate())) {
 				</aui:input>
 				<liferay-ui:input-editor toolbarSet="liferay"/>
 			</aui:field-wrapper>
+		</aui:fieldset>
+		
+		<aui:fieldset label="calendar">
+			<aui:select label="" name="calendarId">
+				<%
+				for (com.liferay.calendar.model.Calendar curCalendar : manageableCalendars) {
+				%>
+					<aui:option selected="<%= curCalendar.getCalendarId() == calendarId %>" value="<%= curCalendar.getCalendarId() %>"><%= HtmlUtil.escape(curCalendar.getName(locale)) %></aui:option>
+	
+				<%
+				}
+				%>
+	
+			</aui:select>
 		</aui:fieldset>
 		
 		<aui:fieldset label="label-participants">

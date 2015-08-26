@@ -41,6 +41,7 @@ public class EventPortletConstants {
     public static final String PARAMETER_EMAIL = "email";
     public static final String PARAMETER_COMPANY_NAME = "companyName";
     public static final String PARAMETER_PHONE_NUMBER = "phoneNumber";
+    public static final String PARAMETER_CALENDAR_ID = "calendarId";
     public static final String PARAMETER_TOKEN = "token";
     public static final String START_END_DATES_SEPARATOR = " - ";
     public static final int INVALID_ID = -1;

@@ -177,7 +177,12 @@ public class EventPortlet extends MVCPortlet {
 				request.setAttribute(WebKeys.PARTICIPANT_ENTRY, participant);
         	}
 
-            EventActionUtil.loadEvent(request, true);
+            try {
+				EventActionUtil.loadEvent(request, true);
+			} catch (SystemException e) {
+				_log.error("Unable to load event");
+				_log.debug(e);
+			}
             // Remove default error message
             SessionMessages.add(request, PortalUtil.getPortletId(request)
                     + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);

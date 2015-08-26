@@ -82,9 +82,9 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
     public Event addEvent(Event newEvent, ServiceContext serviceContext) throws SystemException, PortalException {
         
     	CalendarBooking booking = null;
-    	try{
+    	try {
     		booking = createCalendarBooking(newEvent, serviceContext);
-    	}catch(PortalException ex) {
+    	} catch(PortalException ex) {
     		_log.debug("Current user doesn't have permission to add CalendarBooking");
     	}
     	
@@ -98,7 +98,7 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
         return eventPersistence.update(event);
     }
 
-	private Calendar getUserCalendar(long userId,
+	public Calendar getUserCalendar(long userId,
 			ServiceContext serviceContext) throws SystemException,
 			PortalException {
 		String servletContextName = "calendar-portlet";
@@ -152,10 +152,8 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
 	private CalendarBooking createCalendarBooking(Event newEvent,
 			ServiceContext serviceContext) throws SystemException,
 			PortalException {
-		Calendar calendar = getUserCalendar(newEvent.getUserId(), serviceContext);
-		
-		_log.debug("Adding CalendarBooking to user's calendar");
-		long calendarId = calendar.getCalendarId();
+		_log.debug("Adding CalendarBooking to calendar");
+		long calendarId = newEvent.getCalendarId();
 
 		Map<Locale, String> titleMap = new HashMap<Locale, String>();
 		Map<Locale, String> descriptionMap = new HashMap<Locale, String>();
@@ -176,6 +174,8 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
     		try {
 				CalendarBooking booking = CalendarBookingServiceUtil.fetchCalendarBooking(event.getCalendarBookingId());
 				if(booking != null) {
+					Calendar calendar = CalendarLocalServiceUtil.getCalendar(event.getCalendarId());
+					
 					Map<Locale, String> titleMap = new HashMap<Locale, String>();
 					Map<Locale, String> descriptionMap = new HashMap<Locale, String>();
 
@@ -183,12 +183,14 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
 					descriptionMap.put(serviceContext.getLocale(),
 							event.getDescription());
 					
-					CalendarBookingServiceUtil.updateCalendarBooking(
-							booking.getCalendarBookingId(), booking.getCalendarId(), titleMap,
-							descriptionMap, event.getLocation(), event.getEventDate()
-									.getTime(), event.getEventEndDate()
-									.getTime(), false, "", 0, "", 0,
-							"", 0, serviceContext);
+					booking.setTitleMap(titleMap);
+					booking.setDescriptionMap(descriptionMap);
+					booking.setCalendarId(event.getCalendarId());
+					booking.setCalendarResourceId(calendar.getCalendarResourceId());
+					booking.setStartTime(event.getEventDate().getTime());
+					booking.setEndTime(event.getEventEndDate().getTime());
+
+					CalendarBookingLocalServiceUtil.updateCalendarBooking(booking);
 				}
 			} catch (PortalException e) {
 				_log.debug("Unable to update calendarBooking with id: " + event.getCalendarBookingId());

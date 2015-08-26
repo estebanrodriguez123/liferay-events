@@ -37,7 +37,7 @@ import java.util.Date;
 public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -45,6 +45,8 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		sb.append(eventId);
 		sb.append(", calendarBookingId=");
 		sb.append(calendarBookingId);
+		sb.append(", calendarId=");
+		sb.append(calendarId);
 		sb.append(", groupId=");
 		sb.append(groupId);
 		sb.append(", companyId=");
@@ -81,6 +83,7 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 
 		eventImpl.setEventId(eventId);
 		eventImpl.setCalendarBookingId(calendarBookingId);
+		eventImpl.setCalendarId(calendarId);
 		eventImpl.setGroupId(groupId);
 		eventImpl.setCompanyId(companyId);
 		eventImpl.setUserId(userId);
@@ -132,6 +135,7 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 		uuid = objectInput.readUTF();
 		eventId = objectInput.readLong();
 		calendarBookingId = objectInput.readLong();
+		calendarId = objectInput.readLong();
 		groupId = objectInput.readLong();
 		companyId = objectInput.readLong();
 		userId = objectInput.readLong();
@@ -155,6 +159,7 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 
 		objectOutput.writeLong(eventId);
 		objectOutput.writeLong(calendarBookingId);
+		objectOutput.writeLong(calendarId);
 		objectOutput.writeLong(groupId);
 		objectOutput.writeLong(companyId);
 		objectOutput.writeLong(userId);
@@ -188,6 +193,7 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	public String uuid;
 	public long eventId;
 	public long calendarBookingId;
+	public long calendarId;
 	public long groupId;
 	public long companyId;
 	public long userId;

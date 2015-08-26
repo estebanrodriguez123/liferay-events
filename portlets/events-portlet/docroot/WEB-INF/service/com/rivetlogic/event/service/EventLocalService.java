@@ -307,6 +307,12 @@ public interface EventLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public com.liferay.calendar.model.Calendar getUserCalendar(long userId,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
 	public com.rivetlogic.event.model.Event updateEvent(
 		com.rivetlogic.event.model.Event event,
 		com.liferay.portal.service.ServiceContext serviceContext)

@@ -86,7 +86,7 @@ public class EventsManagementPortlet extends MVCPortlet {
     
     public void addEditEvent(ActionRequest request, ActionResponse response) throws PortalException, SystemException,
         PortletException, IOException {
-        
+    	
         Event event;
         
         if (Validator.isNull(ParamUtil.getLong(request, EventPortletConstants.PARAMETER_RESOURCE_PRIMARY_KEY))) {
@@ -143,6 +143,7 @@ public class EventsManagementPortlet extends MVCPortlet {
         event.setEventDate(newEventDate.getTime());
         event.setEventEndDate(newEventEndDate.getTime());
         event.setPrivateEvent(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_EVENT));
+        event.setCalendarId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_CALENDAR_ID));
         
         List<String> errors = new ArrayList<String>();
         EventValidator.validateEvent(event, errors);
@@ -218,7 +219,12 @@ public class EventsManagementPortlet extends MVCPortlet {
         String mvcPath = ParamUtil.getString(request, WebKeys.MVC_PATH);
         
         if (mvcPath.equals(WebKeys.EDIT_EVENT_PAGE)) {
-            EventActionUtil.loadEvent(request);
+            try {
+				EventActionUtil.loadEvent(request);
+			} catch (SystemException e) {
+				_log.error("Unable to load event");
+				_log.debug(e);
+			}
         }
         ManagementPrefsBean prefBean = new ManagementPrefsBean(request);
         request.setAttribute(WebKeys.PREF_BEAN, prefBean);
@@ -329,6 +335,7 @@ public class EventsManagementPortlet extends MVCPortlet {
         event.setEventDate(newEventDate.getTime());
         event.setEventEndDate(newEventEndDate.getTime());
         event.setPrivateEvent(ParamUtil.getBoolean(upreq, EventPortletConstants.PARAMETER_EVENT));
+        event.setCalendarId(ParamUtil.getLong(upreq, EventPortletConstants.PARAMETER_CALENDAR_ID));
         
         List<String> errors = new ArrayList<String>();
         EventValidator.validateEvent(event, errors);

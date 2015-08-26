@@ -2800,6 +2800,7 @@ public class EventPersistenceImpl extends BasePersistenceImpl<Event>
 		eventImpl.setUuid(event.getUuid());
 		eventImpl.setEventId(event.getEventId());
 		eventImpl.setCalendarBookingId(event.getCalendarBookingId());
+		eventImpl.setCalendarId(event.getCalendarId());
 		eventImpl.setGroupId(event.getGroupId());
 		eventImpl.setCompanyId(event.getCompanyId());
 		eventImpl.setUserId(event.getUserId());

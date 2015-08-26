@@ -13,6 +13,7 @@
         <!-- FK fields -->
 
         <column name="calendarBookingId" type="long" />
+        <column name="calendarId" type="long" />
 	
         <!-- Group instance -->
 

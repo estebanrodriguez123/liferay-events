@@ -52,6 +52,7 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 		attributes.put("uuid", getUuid());
 		attributes.put("eventId", getEventId());
 		attributes.put("calendarBookingId", getCalendarBookingId());
+		attributes.put("calendarId", getCalendarId());
 		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
@@ -83,6 +84,12 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 
 		if (calendarBookingId != null) {
 			setCalendarBookingId(calendarBookingId);
+		}
+
+		Long calendarId = (Long)attributes.get("calendarId");
+
+		if (calendarId != null) {
+			setCalendarId(calendarId);
 		}
 
 		Long groupId = (Long)attributes.get("groupId");
@@ -218,6 +225,26 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	@Override
 	public void setCalendarBookingId(long calendarBookingId) {
 		_event.setCalendarBookingId(calendarBookingId);
+	}
+
+	/**
+	* Returns the calendar ID of this event.
+	*
+	* @return the calendar ID of this event
+	*/
+	@Override
+	public long getCalendarId() {
+		return _event.getCalendarId();
+	}
+
+	/**
+	* Sets the calendar ID of this event.
+	*
+	* @param calendarId the calendar ID of this event
+	*/
+	@Override
+	public void setCalendarId(long calendarId) {
+		_event.setCalendarId(calendarId);
 	}
 
 	/**

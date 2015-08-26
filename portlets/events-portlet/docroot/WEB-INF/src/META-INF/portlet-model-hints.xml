@@ -5,6 +5,7 @@
 		<field name="uuid" type="String" />
 		<field name="eventId" type="long" />
 		<field name="calendarBookingId" type="long" />
+		<field name="calendarId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />

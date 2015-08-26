@@ -354,6 +354,14 @@ public class EventLocalServiceWrapper implements EventLocalService,
 	}
 
 	@Override
+	public com.liferay.calendar.model.Calendar getUserCalendar(long userId,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _eventLocalService.getUserCalendar(userId, serviceContext);
+	}
+
+	@Override
 	public com.rivetlogic.event.model.Event updateEvent(
 		com.rivetlogic.event.model.Event event,
 		com.liferay.portal.service.ServiceContext serviceContext)

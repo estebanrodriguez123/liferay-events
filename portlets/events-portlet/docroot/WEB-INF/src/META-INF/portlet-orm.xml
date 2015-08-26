@@ -14,6 +14,7 @@
 				<column name="UUID_" />
 			</basic>
 			<basic name="calendarBookingId" />
+			<basic name="calendarId" />
 			<basic name="groupId" />
 			<basic name="companyId" />
 			<basic name="userId" />
