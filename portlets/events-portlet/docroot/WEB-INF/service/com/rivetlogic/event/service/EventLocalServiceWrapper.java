@@ -345,25 +345,50 @@ public class EventLocalServiceWrapper implements EventLocalService,
 	}
 
 	@Override
-	public java.util.List<com.rivetlogic.event.model.Event> getPastEvents(
-		int start, int end) {
-		return _eventLocalService.getPastEvents(start, end);
+	public com.rivetlogic.event.model.Event addEvent(
+		com.rivetlogic.event.model.Event newEvent,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _eventLocalService.addEvent(newEvent, serviceContext);
 	}
 
 	@Override
-	public int getPastEventsCount() {
-		return _eventLocalService.getPastEventsCount();
+	public com.liferay.calendar.model.Calendar getUserCalendar(long userId,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _eventLocalService.getUserCalendar(userId, serviceContext);
+	}
+
+	@Override
+	public com.rivetlogic.event.model.Event updateEvent(
+		com.rivetlogic.event.model.Event event,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _eventLocalService.updateEvent(event, serviceContext);
+	}
+
+	@Override
+	public java.util.List<com.rivetlogic.event.model.Event> getPastEvents(
+		int start, int end, long userId) {
+		return _eventLocalService.getPastEvents(start, end, userId);
+	}
+
+	@Override
+	public int getPastEventsCount(long userId) {
+		return _eventLocalService.getPastEventsCount(userId);
 	}
 
 	@Override
 	public java.util.List<com.rivetlogic.event.model.Event> getUpcomingEvents(
-		int start, int end) {
-		return _eventLocalService.getUpcomingEvents(start, end);
+		int start, int end, long userId) {
+		return _eventLocalService.getUpcomingEvents(start, end, userId);
 	}
 
 	@Override
-	public int getUpcomingEventsCount() {
-		return _eventLocalService.getUpcomingEventsCount();
+	public int getUpcomingEventsCount(long userId) {
+		return _eventLocalService.getUpcomingEventsCount(userId);
 	}
 
 	@Override

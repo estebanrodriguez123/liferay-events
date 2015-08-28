@@ -19,9 +19,17 @@
 
 package com.rivetlogic.event.util;
 
+import com.liferay.calendar.model.Calendar;
+import com.liferay.calendar.model.CalendarBooking;
+import com.liferay.calendar.service.CalendarBookingLocalServiceUtil;
+import com.liferay.calendar.service.CalendarLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.rivetlogic.event.NoSuchEventException;
 import com.rivetlogic.event.model.Event;
@@ -64,11 +72,11 @@ public class EventActionUtil {
         return participant;
     }
     
-    public static void loadEvent(RenderRequest request) throws PortletException {
+    public static void loadEvent(RenderRequest request) throws PortletException, SystemException {
         loadEvent(request, false);
     }
     
-    public static void loadEvent(RenderRequest request, boolean forcePublic) throws PortletException {
+    public static void loadEvent(RenderRequest request, boolean forcePublic) throws PortletException, SystemException {
         
         Event event = (Event) request.getAttribute(WebKeys.EVENT_ENTRY);
         
@@ -84,10 +92,30 @@ public class EventActionUtil {
                 if (event != null && event.isPast()){
                     SessionErrors.add(request, EVENT_IS_IN_PAST);
                     event = null;
-                }
+				}
+				CalendarBooking booking = CalendarBookingLocalServiceUtil
+						.fetchCalendarBooking(event.getCalendarBookingId());
+				if(booking != null) {
+					event.setCalendarId(booking.getCalendarId());
+				}
                 
             } else {
-                event = new EventImpl();
+				event = new EventImpl();
+				ThemeDisplay themeDisplay = (ThemeDisplay) request
+						.getAttribute(WebKeys.THEME_DISPLAY);
+
+				ServiceContext serviceContext;
+				try {
+					serviceContext = ServiceContextFactory
+							.getInstance(Event.class.getName(), request);
+					Calendar userCalendar = EventLocalServiceUtil.getUserCalendar(
+							themeDisplay.getUserId(), serviceContext);
+					event.setCalendarId(userCalendar.getCalendarId());
+				} catch (PortalException e) {
+					e.printStackTrace();
+				} catch(SystemException e) {
+					e.printStackTrace();
+				}
             }
             
             request.setAttribute(WebKeys.EVENT_ENTRY, event);

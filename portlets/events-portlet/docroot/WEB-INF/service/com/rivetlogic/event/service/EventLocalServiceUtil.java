@@ -331,22 +331,44 @@ public class EventLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
-	public static java.util.List<com.rivetlogic.event.model.Event> getPastEvents(
-		int start, int end) {
-		return getService().getPastEvents(start, end);
+	public static com.rivetlogic.event.model.Event addEvent(
+		com.rivetlogic.event.model.Event newEvent,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().addEvent(newEvent, serviceContext);
 	}
 
-	public static int getPastEventsCount() {
-		return getService().getPastEventsCount();
+	public static com.liferay.calendar.model.Calendar getUserCalendar(
+		long userId, com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getUserCalendar(userId, serviceContext);
+	}
+
+	public static com.rivetlogic.event.model.Event updateEvent(
+		com.rivetlogic.event.model.Event event,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().updateEvent(event, serviceContext);
+	}
+
+	public static java.util.List<com.rivetlogic.event.model.Event> getPastEvents(
+		int start, int end, long userId) {
+		return getService().getPastEvents(start, end, userId);
+	}
+
+	public static int getPastEventsCount(long userId) {
+		return getService().getPastEventsCount(userId);
 	}
 
 	public static java.util.List<com.rivetlogic.event.model.Event> getUpcomingEvents(
-		int start, int end) {
-		return getService().getUpcomingEvents(start, end);
+		int start, int end, long userId) {
+		return getService().getUpcomingEvents(start, end, userId);
 	}
 
-	public static int getUpcomingEventsCount() {
-		return getService().getUpcomingEventsCount();
+	public static int getUpcomingEventsCount(long userId) {
+		return getService().getUpcomingEventsCount(userId);
 	}
 
 	public static java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(

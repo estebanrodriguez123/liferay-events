@@ -55,4 +55,6 @@ public class WebKeys implements com.liferay.portal.kernel.util.WebKeys {
     
     public static final String EXPIRED_TOKEN = "expiredToken";
     
+    public static final String ACTION_KEY_MANAGE_BOOKINGS = "MANAGE_BOOKINGS";
+    
 }

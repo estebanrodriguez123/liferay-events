@@ -4,6 +4,8 @@
 	<model name="com.rivetlogic.event.model.Event">
 		<field name="uuid" type="String" />
 		<field name="eventId" type="long" />
+		<field name="calendarBookingId" type="long" />
+		<field name="calendarId" type="long" />
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
@@ -17,6 +19,7 @@
 			<hint-collection name="TEXTAREA" />
 		</field>
 		<field name="eventDate" type="Date" />
+		<field name="eventEndDate" type="Date" />
 		<field name="privateEvent" type="boolean" />
 	</model>
 	<model name="com.rivetlogic.event.model.Participant">

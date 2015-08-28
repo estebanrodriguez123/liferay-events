@@ -301,19 +301,36 @@ public interface EventLocalService extends BaseLocalService,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.rivetlogic.event.model.Event> getPastEvents(
-		int start, int end);
+	public com.rivetlogic.event.model.Event addEvent(
+		com.rivetlogic.event.model.Event newEvent,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getPastEventsCount();
+	public com.liferay.calendar.model.Calendar getUserCalendar(long userId,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	public com.rivetlogic.event.model.Event updateEvent(
+		com.rivetlogic.event.model.Event event,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.rivetlogic.event.model.Event> getPastEvents(
+		int start, int end, long userId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getPastEventsCount(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.rivetlogic.event.model.Event> getUpcomingEvents(
-		int start, int end);
+		int start, int end, long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getUpcomingEventsCount();
+	public int getUpcomingEventsCount(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.rivetlogic.event.model.Event> getPublicEvents(

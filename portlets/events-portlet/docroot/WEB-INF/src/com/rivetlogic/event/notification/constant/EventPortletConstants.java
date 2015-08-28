@@ -27,16 +27,22 @@ public class EventPortletConstants {
     public static final String PARAMETER_LOCATION = "location";
     public static final String PARAMETER_DESCRIPTION = "description";
     public static final String PARAMETER_EVENT = "event";
-    public static final String PARAMETER_EVENT_DATE = "eventDate";    
-    public static final String PARAMETER_AMPM = "ampm";
-    public static final String PARAMETER_HOUR = "hour";
-    public static final String PARAMETER_MIN = "min";    
+    public static final String PARAMETER_EVENT_DATE = "eventDate";
+    public static final String PARAMETER_EVENT_END_DATE = "eventEndDate";
+    public static final String PARAMETER_START_AMPM = "startAmpm";
+    public static final String PARAMETER_START_HOUR = "startHour";
+    public static final String PARAMETER_START_MIN = "startMin";
+    public static final String PARAMETER_END_AMPM = "endAmpm";
+    public static final String PARAMETER_END_HOUR = "endHour";
+    public static final String PARAMETER_END_MIN = "endMin";    
     public static final String PARAMETER_PARTICIPANT_FULL_NAME = "participantFullName";
     public static final String PARAMETER_PARTICIPANT_EMAIL = "participantEmail";
     public static final String PARAMETER_FILE = "file";
     public static final String PARAMETER_EMAIL = "email";
     public static final String PARAMETER_COMPANY_NAME = "companyName";
     public static final String PARAMETER_PHONE_NUMBER = "phoneNumber";
+    public static final String PARAMETER_CALENDAR_ID = "calendarId";
     public static final String PARAMETER_TOKEN = "token";
+    public static final String START_END_DATES_SEPARATOR = " - ";
     public static final int INVALID_ID = -1;
 }

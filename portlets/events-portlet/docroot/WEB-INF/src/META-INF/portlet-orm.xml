@@ -13,6 +13,8 @@
 			<basic name="uuid">
 				<column name="UUID_" />
 			</basic>
+			<basic name="calendarBookingId" />
+			<basic name="calendarId" />
 			<basic name="groupId" />
 			<basic name="companyId" />
 			<basic name="userId" />
@@ -20,6 +22,9 @@
 			<basic name="location" />
 			<basic name="description" />
 			<basic name="eventDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="eventEndDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="privateEvent" />
